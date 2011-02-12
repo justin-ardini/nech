@@ -6,7 +6,13 @@ function TestEnemy(position) {
 	var this_ = this;
 	this.behavior = new ChargeFireBehavior(4.0, function() {
 		return new BigLaser(this_.position);
-	});
+	}, new ParticleEmitter(.06, function() {
+		for (var i = 0; i < 6; i++) {
+			var angle = -Math.PI / 5 + Math.PI * 2/5 * Math.random();
+			var vel = Vector.fromAngle(angle).mul(5 + 45 * Math.random());
+			Particle().position(this_.position.sub(new Vector(30,0).sub(vel.mul(-1.0)))).velocity(vel).line().radius(6).expand(0.0004).angle(angle);
+		}
+	}));
 };
 
 TestEnemy.prototype.getPrimaryFireBehavior = function() {
@@ -49,11 +55,6 @@ TestEnemy.prototype.onDie = function(game) {
 };
 
 TestEnemy.prototype.drawImpl = function(c) {
-	for (var i = 0; i < 6; i++) {
-		var angle = -Math.PI / 5 + Math.PI * 2/5 * Math.random();
-		var vel = Vector.fromAngle(angle).mul(5 + 45 * Math.random());
-		Particle().position(this.position.sub(new Vector(30,0).sub(vel.mul(-1.0)))).velocity(vel).line().radius(6).expand(0.0004).angle(angle);
-	}
 	c.beginPath();
 	c.lineTo(-60, 0);
 	c.lineTo(-30, 15);

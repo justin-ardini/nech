@@ -1,14 +1,16 @@
 __extends__(ChargeFireBehavior, FireBehavior);
 
-function ChargeFireBehavior(chargeTime, createEntityFunction) {
+function ChargeFireBehavior(chargeTime, createEntityFunction, emitter) {
 	FireBehavior.prototype.constructor.call(this);
 	this.maxChargeTime = this.chargeTime = chargeTime;
 	this.charging = false;
 	this.createEntity = createEntityFunction;
+	this.emitter = emitter;
 };
 
 ChargeFireBehavior.prototype.tick = function(seconds, game) {
 	if (this.charging) {
+		this.emitter.tick(seconds);
 		this.chargeTime += seconds;
 	} else {
 		this.chargeTime = 0;
