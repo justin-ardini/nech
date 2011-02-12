@@ -5,7 +5,8 @@ function Entity(position, radius, health) {
 	this.health = health;
 	this.maxHealth = health;
 	this.angle = 0;
-
+	this.primaryFireBehavior = new RepeatedFireBehavior(0.1, 'Laser');
+	this.secondaryFireBehavior = new RepeatedFireBehavior(1, 'Missile');
 	this.playerId = null;
 	this.netId = null;
 }
@@ -13,16 +14,6 @@ function Entity(position, radius, health) {
 Entity.prototype.tick = function(seconds) {
 	this.position = this.position.add(this.velocity.mul(seconds));
 };
-
-// Shots should be added with game.addEntity()
-Entity.prototype.primaryShot = function(game) {
-	return;
-}
-
-// Shots should be added with game.addEntity()
-Entity.prototype.secondaryShot = function(game) {
-	return;
-}
 
 Entity.prototype.draw = function(c) {
 	c.save();
