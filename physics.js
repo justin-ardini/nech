@@ -3,6 +3,7 @@ var GAME_HEIGHT = 600;
 var damageMap = {
 	Laser: 1,
 	Missile: 5,
+	Spinner: 10,
 	BigLaser: 100
 };
 var collisionMap = {
@@ -10,6 +11,7 @@ var collisionMap = {
 	Missile: { type: 'circle', radius: 3 },
 	TheOne: { type: 'circle', radius: 20 },
 	TestEnemy: { type: 'circle', radius: 90 },
+	Spinner: { type: 'circle', radius: 3 },
 	BigLaser: { type: 'line', thickness: 15 }
 };
 
