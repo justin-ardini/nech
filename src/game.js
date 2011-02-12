@@ -3,28 +3,35 @@ var KEY_DOWN = 1;
 var KEY_LEFT = 2;
 var KEY_RIGHT = 3;
 
-function Game() {
+function Game(player) {
+	// TODO: this will instead be passed in by main.js when the game starts
+	player = new TheOne();
+
 	this.highlightAngle = 0;
+	this.locals = [player];
+	this.remotes = [];
+	this.controller = new PlayerController(player);
 
-	this.theOne = new TheOne();
+	// TODO: remove this when locals and remotes are implemented
+	this.theOne = player;
 	this.theOne.position = new Vector(300, 300);
-
-	this.enemies = [];
-	this.enemies.push(new TestEnemy());
-	this.enemies.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
-	this.enemies[0].position = new Vector(400, 400);
-
-	this.controller = new PlayerController(this.theOne);
+	this.remotes.push(new TestEnemy());
+	this.remotes.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
+	this.remotes[0].position = new Vector(400, 400);
 }
 
 Game.prototype.tick = function(seconds) {
-	for (var i = 0; i < this.enemies.length; i++) {
-		this.enemies[i].tick(seconds);
-	}
 	this.controller.tick(seconds);
-	this.theOne.tick(seconds);
+	for (var i = 0; i < this.locals.length; i++) {
+		this.locals[i].tick(seconds);
+	}
+	for (var i = 0; i < this.remotes.length; i++) {
+		this.remotes[i].tick(seconds);
+	}
 	this.highlightAngle += seconds * 0.1;
 	Particle.tick(seconds);
+
+	// TODO: broadcast state of this.locals (but not this.remotes, which will instead be broadcast to us)
 };
 
 Game.prototype.draw = function(c) {
@@ -33,8 +40,11 @@ Game.prototype.draw = function(c) {
 	this.drawHighlight(c);
 
 	c.fillStyle = 'black';
-	for (var i = 0; i < this.enemies.length; i++) {
-		this.enemies[i].draw(c);
+	for (var i = 0; i < this.locals.length; i++) {
+		this.locals[i].draw(c);
+	}
+	for (var i = 0; i < this.remotes.length; i++) {
+		this.remotes[i].draw(c);
 	}
 	this.theOne.draw(c);
 	Particle.draw(c);
