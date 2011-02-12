@@ -4,6 +4,7 @@
 	var lastTime;
 	var socket;
 	var fps = 0;
+	var updateTimer = 0;
 
 	function tick() {
 		var currentTime = new Date();
@@ -24,7 +25,11 @@
 		c.fillText(fps.toFixed() + ' FPS', c.canvas.width - 10, 20);
 
 		// propagate our changes to other clients
-		socket.send(game.getMessageForServer());
+		updateTimer += seconds;
+		while (updateTimer > 0) {
+			socket.send(game.getMessageForServer());
+			updateTimer -= 0.1;
+		}
 	}
 
 	$(document).ready(function() {
@@ -42,7 +47,6 @@
 		socket.connect(); // Player joins a lobby
 
 		socket.on('message', function(obj) {
-			console.log(obj);
 			if (game === null) {
 				var id = obj['playerId'];
 				var type = obj['type'];

@@ -16,8 +16,9 @@ function Missile(position, acceleration) {
 
 Missile.prototype.tick = function(seconds) {
 	this.velocity = this.velocity.add(this.acceleration.mul(seconds));
-	this.position = this.position.add(this.velocity.mul(seconds));
 	this.emitter.tick(seconds);
+
+	Entity.prototype.tick.call(this, seconds);
 };
 
 Missile.prototype.drawImpl = function(c) {

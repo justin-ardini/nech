@@ -4,9 +4,6 @@ function TheOne(position) {
 	Entity.prototype.constructor.call(this, position, 15, 1);
 }
 
-TheOne.prototype.tick = function(seconds) {
-};
-
 TheOne.prototype.drawImpl = function(c) {
 	c.beginPath();
 	c.lineTo(-5, -2);

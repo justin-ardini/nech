@@ -120,7 +120,7 @@ Game.prototype.setRemotesFromMessage = function(message) {
 			// don't add our own objects to remotes (they are already in locals)
 			if (r.playerId == this.playerId) continue;
 
-			var remote = classMap[r.type](new Vector(r.position.x, r.position.y));
+			var remote = new classMap[r.type](new Vector(r.position.x, r.position.y));
 			remote.playerId = r.playerId;
 			remote.netId = r.netId;
 			remote.velocity = new Vector(r.velocity.x, r.velocity.y);

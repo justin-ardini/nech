@@ -10,6 +10,10 @@ function Entity(position, radius, health) {
 	this.netId = null;
 }
 
+Entity.prototype.tick = function(seconds) {
+	this.position = this.position.add(this.velocity.mul(seconds));
+};
+
 Entity.prototype.draw = function(c) {
 	c.save();
 	c.translate(this.position.x, this.position.y);
@@ -18,9 +22,6 @@ Entity.prototype.draw = function(c) {
 	this.drawHealthBar(c);
 	this.drawImpl(c);
 	c.restore();
-};
-
-Entity.prototype.tick = function(seconds) {
 };
 
 Entity.prototype.drawHealthBar = function(c) {

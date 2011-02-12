@@ -7,10 +7,6 @@ function Laser(position, velocity) {
 	this.direction = velocity.unit().mul(5);
 }
 
-Laser.prototype.tick = function(seconds) {
-	this.position = this.position.add(this.velocity.mul(seconds));
-};
-
 Laser.prototype.draw = function(c) {
 	var x = this.position.x;
 	var y = this.position.y;
