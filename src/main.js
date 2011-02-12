@@ -28,6 +28,8 @@
 		c.canvas.width = 800;
 		c.canvas.height = 600;
 		lastTime = new Date();
+		// TODO: Remove once networking works
+		game = new Game(0, 'TheOne', new Vector(200, 200));
 		tick();
 		setInterval(tick, 1000 / 60);
 		var socket = new io.Socket(null, { port: 80 }); // IMPORTANT. HAVE THE PORT CORRECT.
@@ -35,8 +37,16 @@
 
 		socket.on('message', function(obj) {
 			if (game === null) {
-				obj = 
+				var id = game['playerId']
+				var type = game['type']
+				var pos = new Vector(game['position'][0], game['position'][1]);
+				// playerid, type, position
+				if ('type' in obj) {
+					// make a new game from netid
+					game = new Game(id, type, pos);
+				}
 			} else {
+				// netid, type, position, velocity
 				game.receiveObject(obj);
 			}
 		});

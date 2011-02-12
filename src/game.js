@@ -2,11 +2,15 @@ var KEY_UP = 0;
 var KEY_DOWN = 1;
 var KEY_LEFT = 2;
 var KEY_RIGHT = 3;
+var classMap = { 
+	'TheOne': TheOne,
+	'Missile': Missile
+};
 
-function Game(player) {
-	// TODO: this will instead be passed in by main.js when the game starts
-	player = new TheOne();
+function Game(id, type, pos) {
+	player = new classMap[type](pos);
 
+	this.id = id;
 	this.highlightAngle = 0;
 	this.locals = [player];
 	this.remotes = [];
