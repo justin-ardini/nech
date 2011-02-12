@@ -10,8 +10,8 @@ TestEnemy.prototype.getPrimaryFireBehavior = function() {
 	return new RepeatedFireBehavior(1.0, function() {
 		var toAdd = [];
 		for (var i = 0; i < 16; ++i) {
-			// 1/3 MATH.PI <= angle <= 5/3 MATH.PI
-			var angle = .3333333 * Math.PI + (i / 20) * (Math.PI * 1.3333);
+			// 2/3 MATH.PI <= angle <= 4/3 MATH.PI
+			var angle = 0.6666 * Math.PI + (i / 16) * (Math.PI * 0.6666);
 			toAdd.push(new Laser(this_.position, angle));
 		}
 		return toAdd;
@@ -26,6 +26,11 @@ TestEnemy.prototype.getSecondaryFireBehavior = function() {
 };
 
 TestEnemy.prototype.drawImpl = function(c) {
+	for (var i = 0; i < 30; i++) {
+		var angle = -Math.PI / 3 + Math.PI * 2/3 * Math.random();
+		var vel = Vector.fromAngle(angle).mul(-200 * Math.random());
+		Particle().position(this.position).velocity(vel).line().radius(10).expand(0.001).angle(angle);
+	}
 	c.beginPath();
 	c.lineTo(-60, 0);
 	c.lineTo(-30, 15);
