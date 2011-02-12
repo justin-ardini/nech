@@ -2,32 +2,31 @@ var sys = require('sys')
 	, url = require('url')
 	, http = require('http')
 	, io = require('socket.io')
-	, PORT = 80 // MAKE SURE THIS IS SAME AS SOCKET.IO
+	, PORT = 8080 // MAKE SURE THIS IS SAME AS SOCKET.IO
 
 	, static = require('node-static')
 	// Create a node-static server to serve the current directory
-	, fileServer = new static.Server('./public', { cache: 7200, headers: {'X-Hello':'Starting static server!'} })
+	, fileServer = new static.Server('./www', { cache: 7200, headers: {'X-Hello':'Starting static server!'} })
 
 
 var httpServer = http.createServer(function (request, response) {
-	response.writeHead(200, {'Content-Type': 'text/html'});
-	response.write('<h1>Welcome!</h1>');
-
 	/* If we need multiple paths
     var path = url.parse(request.url).pathname;
-
     switch(path) {
 		case '/':
-
-			break;
 		...
+	}); */
+	fileServer.serve(request, response, function (err, res) {
+		if (err) {
+			sys.error('> Error serving ' + request.url + ' - ' + err.message);
+			fileServer.serveFile('/404.html', err.headers, err.headers, request, response);
+		}
 	});
-	*/
 });
 
 
 httpServer.listen(PORT);
-console.log('> Server is listening on http://127.0.0.1:' + PORT);
+console.log('> Server is listening on http://localhost:' + PORT);
 
 
 /*****************************************************************/
