@@ -50,9 +50,9 @@ ParticleInstance.prototype.draw = function(c) {
 		break;
 
 	case PARTICLE_TRIANGLE:
-		var v1 = this.m_position.add(this.m_velocity.mul(0.04));
-		var v2 = this.m_position.sub(this.m_velocity.flip().mul(0.01));
-		var v3 = this.m_position.add(this.m_velocity.flip().mul(0.01));
+		var v1 = this.m_position.add(this.m_velocity.mul(0.04 * this.m_radius));
+		var v2 = this.m_position.sub(this.m_velocity.flip().mul(0.01 * this.m_radius));
+		var v3 = this.m_position.add(this.m_velocity.flip().mul(0.01 * this.m_radius));
 		c.fillStyle = cssRGBA(this.m_red, this.m_green, this.m_blue, this.m_alpha);
 		c.beginPath();
 		c.moveTo(v1.x, v1.y);

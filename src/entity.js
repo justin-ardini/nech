@@ -22,6 +22,10 @@ Entity.prototype.tick = function(seconds) {
 	this.position = this.position.add(this.velocity.mul(seconds));
 };
 
+// called when an entity is removed from the entitiy list, override this in a subclass to customize
+Entity.prototype.die = function(game) {
+};
+
 // Shots should be added with game.addEntity()
 Entity.prototype.primaryShot = function(game) {
 	return;

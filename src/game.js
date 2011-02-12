@@ -114,6 +114,9 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		var entity = this.entities[i];
 		var id = entity.playerId + ':' + entity.netId;
 		if (!(id in newMap) && entity.seenFromServer) {
+			// let the entity know it's dead (for particles)
+			entity.die(this);
+
 			// remove entity from entities while simultaneously making sure we don't skip the next entity
 			this.entities.splice(i--, 1);
 		}
