@@ -44,6 +44,7 @@ socket.on('connection', function(client) {
 		//			listener.clients[count].send(json({ action: 'fetch' }));
 		//		}
 		// }
+	});
 
 	client.on('message', function(message) {
 		// Broadcast message to all clients
