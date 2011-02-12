@@ -3,7 +3,6 @@ function PlayerController(game, entity) {
 	this.entity = entity;
 	this.fireMainDelay = 0;
 	this.fireAltDelay = 0;
-	this.direction = (entity instanceof TheOne) ? 1 : -1;
 
 	// these will automatically be set by Game
 	this.upKey = false;
@@ -24,14 +23,14 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.fireMainDelay > 0) {
 		this.fireMainDelay -= seconds;
 	} else if (this.shootMainKey) {
-		entity.primaryShot();
+		this.entity.primaryShot(this.game);
 		this.fireMainDelay = 0.1;
 	}
 
 	if (this.fireAltDelay > 0) {
 		this.fireAltDelay -= seconds;
 	} else if (this.shootAltKey) {
-		entity.secondaryShot();
+		this.entity.secondaryShot(this.game);
 		this.fireAltDelay = 1;
 	}
 };

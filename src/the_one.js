@@ -4,12 +4,12 @@ function TheOne(position) {
 	Entity.prototype.constructor.call(this, position, 15, 1);
 }
 
-TheOne.prototype.primaryShot = function(locals) {
-	game.addEntity(new Laser(this.entity.position, new Vector(350 * this.direction, 0)));
+TheOne.prototype.primaryShot = function(game) {
+	game.addEntity(new Laser(this.position, new Vector(350, 0)));
 }
 
-TheOne.prototype.secondaryShot = function(locals) {
-	game.addEntity(new Missile(this.entity.position, new Vector(200 * this.direction, 0)));
+TheOne.prototype.secondaryShot = function(game) {
+	game.addEntity(new Missile(this.position, new Vector(200, 0)));
 }
 
 TheOne.prototype.drawImpl = function(c) {

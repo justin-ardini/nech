@@ -15,12 +15,12 @@ Entity.prototype.tick = function(seconds) {
 };
 
 // Shots should be added with game.addEntity()
-Entity.prototype.primaryShot = function() {
+Entity.prototype.primaryShot = function(game) {
 	return;
 }
 
 // Shots should be added with game.addEntity()
-Entity.prototype.secondaryShot = function() {
+Entity.prototype.secondaryShot = function(game) {
 	return;
 }
 
