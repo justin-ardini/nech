@@ -3,6 +3,10 @@ __extends__(TestEnemy, Entity);
 function TestEnemy(position) {
 	Entity.prototype.constructor.call(this, position, 90);
 	this.health = this.maxHealth = 1000;
+	var this_ = this;
+	this.behavior = new ChargeFireBehavior(4.0, function() {
+		return new BigLaser(this_.position);
+	});
 };
 
 TestEnemy.prototype.getPrimaryFireBehavior = function() {
@@ -19,20 +23,15 @@ TestEnemy.prototype.getPrimaryFireBehavior = function() {
 };
 
 TestEnemy.prototype.getSecondaryFireBehavior = function() {
-	var this_ = this;
-	return new ChargeFireBehavior(4.0, function() {
-		return new BigLaser(this_.position);
-	});
+	return this.behavior;
 };
 
 TestEnemy.prototype.onFromServer = function(entity) {
-	console.log('receiving from server: charging = ' + entity.charging);
-	//this.charging = entity.charging;
+	this.behavior.charging = entity.charging;
 }
 
 TestEnemy.prototype.onToServer = function(entity) {
-	console.log('sending to server: charging = ' + entity.charging);
-	entity.charging = true; 
+	entity.charging = this.behavior.charging;
 }
 
 TestEnemy.prototype.drawImpl = function(c) {

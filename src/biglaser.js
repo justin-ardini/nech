@@ -11,7 +11,7 @@ BigLaser.prototype.tick = function(seconds, game) {
 	if (this.timeLeft <= 0) {
 		game.removeEntity(this);
 	}
-	Entity.prototype.tick.call(this, seconds);
+	Entity.prototype.tick.call(this, seconds, game);
 }
 
 BigLaser.prototype.draw = function(c) {
