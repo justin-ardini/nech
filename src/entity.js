@@ -14,6 +14,16 @@ Entity.prototype.tick = function(seconds) {
 	this.position = this.position.add(this.velocity.mul(seconds));
 };
 
+// Shots should be added with game.addEntity()
+Entity.prototype.primaryShot = function() {
+	return;
+}
+
+// Shots should be added with game.addEntity()
+Entity.prototype.secondaryShot = function() {
+	return;
+}
+
 Entity.prototype.draw = function(c) {
 	c.save();
 	c.translate(this.position.x, this.position.y);

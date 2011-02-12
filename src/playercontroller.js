@@ -26,14 +26,14 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.fireMainDelay > 0) {
 		this.fireMainDelay -= seconds;
 	} else if (this.shootMainKey) {
-		this.game.locals.push(new Laser(this.entity.position, new Vector(350 * this.direction, 0)));
+		entity.primaryShot();
 		this.fireMainDelay = 0.1;
 	}
 
 	if (this.fireAltDelay > 0) {
 		this.fireAltDelay -= seconds;
 	} else if (this.shootAltKey) {
-		this.game.locals.push(new Missile(this.entity.position, new Vector(200 * this.direction, 0)));
+		entity.secondaryShot();
 		this.fireAltDelay = 1;
 	}
 };
