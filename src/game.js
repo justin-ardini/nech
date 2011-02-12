@@ -12,7 +12,8 @@ var classMap = {
 	'Laser': Laser,
 	'TheOne': TheOne,
 	'Missile': Missile,
-	'TestEnemy': TestEnemy
+	'TestEnemy': TestEnemy,
+	'BigLaser': BigLaser
 };
 
 function Game(playerId, type, pos) {

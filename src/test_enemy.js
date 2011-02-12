@@ -17,7 +17,7 @@ TestEnemy.prototype.primaryShot = function(game) {
 }
 
 TestEnemy.prototype.secondaryShot = function(game) {
-	game.addEntity(new Missile(this.position, Math.PI));
+	game.addEntity(new BigLaser(this.position));
 	return TEST_ENEMY_DELAY2;
 }
 
