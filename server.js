@@ -32,26 +32,60 @@ console.log('> Server is listening on http://localhost:' + PORT);
 /*****************************************************************/
 // All the socket.io
 var socket = io.listen(httpServer);
+var clients = [];
+// mapping of clients to entities held by that client
+
+// Start a new game, giving the player role to the first one who joined
+startGame = function() {
+	// TODO: Assign different roles when they exist
+	for (var i = 0; i < clients.length; ++i) {
+		clients[i].playerId = i;
+		clients[i].entities = {};
+		clients[i].send({ playerId: i, type: 'TheOne', position: [100 * i, 100 * i] });
+	}
+	setInterval(pushUpdates, 1000 / 500);
+}
+
+// Push updates to all clients
+pushUpdates = function() {
+	var len = clients.length;
+	var entities = [];
+	for (var i = 0; i < len; ++i) {
+		for (var netId in clients[i].entities) {
+			entities.push(clients[i].entities[netId]);
+		}
+	}
+	for (var i = 0; i < len; ++i) {
+		clients[i].send(entities);
+	}
+}
 
 socket.on('connection', function(client) {
+	clients.push(client);
+	// TODO: Up this number / figure way of starting the game
+	if (clients.length === 1) {
+		startGame(this);
+	}
 
-	client.on('connect', function(message) {
-		// Possibly broadcast added client
-		// var len = listener.clients.length;
-		// for (var i = 0; i < len; ++i) {
-		//		if (listener.clients[i] !== null) {
-		//			listener.clients[count].send(json({ action: 'fetch' }));
-		//		}
-		// }
-	});
-
+	// Update list of entities for that client
 	client.on('message', function(message) {
-		// Broadcast message to all clients
-		client.broadcast(message);
+		console.log('Received message from client ' + this.playerId);
+		var netId = message.netId;
+		if (clients[i].entities[netId] === undefined) {
+			clients[i].entities[netId] = { playerId: i, netId: netId, type: message.type, position: message.position, velocity: message.velocity, angle: message.angle };
+		} else {
+			// May want to update, but for now, just replace
+			clients[i].entities[netId] = { playerId: i, netId: netId, type: message.type, position: message.position, velocity: message.velocity, angle: message.angle };
+		}
 	});
 
+	// Remove the client
 	client.on('disconnect', function() {
-		// Handle disconnected client
+		for (var i = 0; i < clients.length; ++i) {
+			if (this === clients[i]) {
+				clients.splice(i, 1);
+			}
+		}
 	});
 });
 

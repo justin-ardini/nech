@@ -29,24 +29,19 @@
 		c.canvas.height = 600;
 		lastTime = new Date();
 		// TODO: Remove once networking works
-		game = new Game(0, 'TheOne', new Vector(200, 200));
-		tick();
-		setInterval(tick, 1000 / 60);
-		var socket = new io.Socket(null, { port: 80 }); // IMPORTANT. HAVE THE PORT CORRECT.
+		game = null;
+		var socket = new io.Socket(null, { port: 8080 }); // IMPORTANT. HAVE THE PORT CORRECT.
 		socket.connect(); // Player joins a lobby
 
 		socket.on('message', function(obj) {
 			if (game === null) {
-				var id = game['playerId']
-				var type = game['type']
-				var pos = new Vector(game['position'][0], game['position'][1]);
-				// playerid, type, position
-				if ('type' in obj) {
-					// make a new game from netid
-					game = new Game(id, type, pos);
-				}
+				var id = obj['playerId'];
+				var type = obj['type'];
+				var pos = new Vector(obj['position'][0], obj['position'][1]);
+				game = new Game(id, type, pos);
+				tick();
+				setInterval(tick, 1000 / 60);
 			} else {
-				// netid, type, position, velocity
 				game.receiveObject(obj);
 			}
 		});

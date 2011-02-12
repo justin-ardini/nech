@@ -42,11 +42,11 @@ Game.prototype.tick = function(seconds) {
 };
 
 Game.prototype.receiveObject = function(obj) {
-    if ('enemies' in obj) {
-    }
-    if ('dropPlayer' in obj) {
-        this.dropPlayer(obj['dropPlayer']);        
-    }
+	// netid, type, position, velocity
+	//obj['netId'] = 
+	//obj['type']
+	//obj['position']
+	//obj['velocity']
 };
 
 // Pause the game when a disconnect occurs
