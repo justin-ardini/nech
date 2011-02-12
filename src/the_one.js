@@ -49,7 +49,7 @@ TheOne.prototype.drawImpl = function(c) {
 	if (this.usingShield) {
 		c.beginPath();
 		c.arc(0, 0, 35, 0, Math.PI * 2, false);
-		c.arc(0, 0, 35 + this.shield * 5 / this.maxShield, 0, Math.PI * 2, true);
+		c.arc(0, 0, 35 + this.shield * 5 / this.maxShield, Math.PI * 2, 0, true);
 		c.fill();
 	}
 	
