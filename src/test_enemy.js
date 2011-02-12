@@ -7,13 +7,16 @@ function TestEnemy(position) {
 	this.behavior = new ChargeFireBehavior(4.0, function() {
 		this_.health -= 50;
 		return new BigLaser(this_.position);
-	}, new ParticleEmitter(.05, function() {
+	});
+	
+	this.emitter = new ParticleEmitter(.05, function() {
 		for (var i = 0; i < 6; i++) {
 			var angle = -Math.PI / 5 + Math.PI * 2/5 * Math.random();
 			var vel = Vector.fromAngle(angle).mul(5 + 45 * Math.random());
 			Particle().position(this_.position.sub(new Vector(30,0).sub(vel.mul(-1.0)))).velocity(vel).line().radius(6).expand(0.0004).angle(angle);
 		}
-	}));
+	});
+	this.chargingTimer = 0;
 };
 
 TestEnemy.prototype.getPrimaryFireBehavior = function() {
@@ -27,6 +30,23 @@ TestEnemy.prototype.getPrimaryFireBehavior = function() {
 		}
 		return toAdd;
 	});
+};
+
+TestEnemy.prototype.tick = function(seconds) {
+	Entity.prototype.tick.call(this, seconds);
+
+	if (this.behavior.charging) {
+		this.emitter.tick(seconds);
+		this.chargingTimer += seconds;
+		if (this.chargingTimer > 3.4) {
+			this.emitter.tick(-seconds);
+			if (this.chargingTimer > 4.0) {
+				this.chargingTimer -= 4.0;
+			}
+		}
+	} else {
+		this.chargingTimer = 0;
+	}
 };
 
 TestEnemy.prototype.getSecondaryFireBehavior = function() {
