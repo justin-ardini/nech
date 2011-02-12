@@ -19,10 +19,8 @@ function Game(id, type, pos) {
 	// TODO: remove this when locals and remotes are implemented
 	this.theOne = player;
 	this.theOne.position = new Vector(300, 300);
-
-	this.remotes.push(new TestEnemy());
+	this.remotes.push(new TestEnemy(new Vector(400, 400)));
 	this.remotes.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
-	this.remotes[0].position = new Vector(400, 400);
 	this.paused = false;
 }
 

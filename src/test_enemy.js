@@ -1,7 +1,7 @@
 __extends__(TestEnemy, Entity);
 
-function TestEnemy() {
-	Entity.prototype.constructor.call(this);
+function TestEnemy(position) {
+	Entity.prototype.constructor.call(this, position, 30);
 	this.particleTimer = 0;
 }
 
