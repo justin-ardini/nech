@@ -3,20 +3,22 @@ __extends__(Spinner, Entity);
 function Spinner(position, angle) {
 	Entity.prototype.constructor.call(this, position, 5);
 	this.angle = angle || 0; // default angle of 0
-
+	this.velocity = 0;
 	var this_ = this;
-	this.emitter = new ParticleEmitter(0.05, function() {
+	this.emitter = new ParticleEmitter(0.10, function() {
 		var vel = this_.velocity.add(new Vector(Math.random() * 10 - 5, Math.random() * 10 - 5)).sub(Vector.fromAngle(this_.angle).mul(50));
 		Particle().position(this_.position).velocity(vel).circle().radius(3).expand(0.5);
 	});
 }
 
 Spinner.prototype.tick = function(seconds, game) {
-	this.angle = (this.angle + 2 * seconds);
+	if (this.velocity === 0) {
+		this.velocity = Vector.fromAngle(this.angle).mul(1000 * seconds);
+	}
+	this.angle = (this.angle + seconds);
 	if (this.angle > 2 * Math.PI) {
 		this.angle -= 2 * Math.PI;
 	}
-	this.velocity = Vector.fromAngle(this.angle).mul(200 * seconds);
 	this.emitter.tick(seconds);
 
 	Entity.prototype.tick.call(this, seconds);

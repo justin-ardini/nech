@@ -23,6 +23,7 @@ function PlayerController(game, entity) {
 	// these aren't set automatically
 	this.prevShootMainKey = false;
 	this.prevShootAltKey = false;
+	this.prevShootAlt2Key = false;
 }
 
 PlayerController.prototype.tick = function(seconds) {
@@ -42,7 +43,9 @@ PlayerController.prototype.tick = function(seconds) {
 
 	this.primaryFireBehavior.tick(seconds, this.game);
 	this.secondaryFireBehavior.tick(seconds, this.game);
-	this.tertiaryFireBehavior.tick(seconds, this.game);
+	if (this.tertiaryFireBehavior !== null) {
+		this.tertiaryFireBehavior.tick(seconds, this.game);
+	}
 	if (this.shootMainKey) {
 		this.primaryFireBehavior.keydown(this.game);
 	}
@@ -59,7 +62,11 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.prevShootAltKey && !this.shootAltKey) {
 		this.secondaryFireBehavior.keyup(this.game);
 	}
+	if (this.prevShootAlt2Key && !this.shootAlt2Key) {
+		this.tertiaryFireBehavior.keyup(this.game);
+	}
 
 	this.prevShootMainKey = this.shootMainKey;
 	this.prevShootAltKey = this.shootAltKey;
+	this.prevShootAlt2Key = this.shootAlt2Key;
 };
