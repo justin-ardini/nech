@@ -255,7 +255,7 @@ Game.prototype.keyUp = function(key) {
 		case KEY_SHOOT_MAIN: this.controller.shootMainKey = false; break;
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = false; break;
 		case KEY_SHIELD: this.controller.shieldKey = false; break;
-		case KEY_SHOOT_ALT2: this.controller.shootAlt2Key = false; this.controller.shootAlt2Key = true; break;
+		case KEY_SHOOT_ALT2: this.controller.shootAlt2Key = false; this.controller.shootAlt2Key = false; break;
 	}
 };
 

@@ -62,7 +62,7 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.prevShootAltKey && !this.shootAltKey) {
 		this.secondaryFireBehavior.keyup(this.game);
 	}
-	if (this.prevShootAlt2Key && !this.shootAlt2Key) {
+	if (this.prevShootAlt2Key && !this.shootAlt2Key && this.tertiaryFireBehavior !== null) {
 		this.tertiaryFireBehavior.keyup(this.game);
 	}
 

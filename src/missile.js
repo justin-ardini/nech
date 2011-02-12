@@ -1,7 +1,7 @@
 __extends__(Missile, Entity);
 
 function Missile(position, angle) {
-	Entity.prototype.constructor.call(this, position, 5);
+	Entity.prototype.constructor.call(this, position, 4);
 	this.angle = angle || 0; // default angle of 0
 
 	var this_ = this;
@@ -20,11 +20,11 @@ Missile.prototype.tick = function(seconds, game) {
 
 Missile.prototype.drawImpl = function(c) {
 	c.beginPath();
-	c.lineTo(-10, 3);
+	c.lineTo(-8, 3);
 	c.lineTo(5, 3);
-	c.lineTo(10, 0);
+	c.lineTo(8, 0);
 	c.lineTo(5, -3);
-	c.lineTo(-10, -3);
+	c.lineTo(-8, -3);
 	c.fill();
 };
 

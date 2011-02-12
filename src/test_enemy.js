@@ -58,7 +58,7 @@ TestEnemy.prototype.getTertiaryFireBehavior = function() {
 	return new RepeatedFireBehavior(3, function() {
 		var toAdd = [];
 		for (var i = 0; i < 5; ++i) {
-			var angle = (i / 5) * (2 * Math.PI);
+			var angle = Math.random() + (i / 5) * (2 * Math.PI);
 			toAdd.push(new Spinner(this_.position, angle));
 		}
 		return toAdd;

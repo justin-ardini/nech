@@ -5,17 +5,15 @@ function Spinner(position, angle) {
 	this.angle = angle || 0; // default angle of 0
 	this.velocity = 0;
 	var this_ = this;
-	this.emitter = new ParticleEmitter(0.10, function() {
+	this.emitter = new ParticleEmitter(0.15, function() {
 		var vel = this_.velocity.add(new Vector(Math.random() * 10 - 5, Math.random() * 10 - 5)).sub(Vector.fromAngle(this_.angle).mul(50));
 		Particle().position(this_.position).velocity(vel).circle().radius(3).expand(0.5);
 	});
 }
 
 Spinner.prototype.tick = function(seconds, game) {
-	if (this.velocity === 0) {
-		this.velocity = Vector.fromAngle(this.angle).mul(1000 * seconds);
-	}
-	this.angle = (this.angle + seconds);
+	this.velocity = Vector.fromAngle(this.angle).mul(8000 * seconds);
+	this.angle = (this.angle + seconds * 0.5);
 	if (this.angle > 2 * Math.PI) {
 		this.angle -= 2 * Math.PI;
 	}
@@ -26,11 +24,11 @@ Spinner.prototype.tick = function(seconds, game) {
 
 Spinner.prototype.drawImpl = function(c) {
 	c.beginPath();
-	c.lineTo(-10, 3);
+	c.lineTo(-8, 3);
 	c.lineTo(5, 3);
-	c.lineTo(10, 0);
+	c.lineTo(8, 0);
 	c.lineTo(5, -3);
-	c.lineTo(-10, -3);
+	c.lineTo(-8, -3);
 	c.fill();
 };
 
