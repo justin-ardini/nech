@@ -18,11 +18,11 @@ function TestEnemy(position) {
 
 TestEnemy.prototype.getPrimaryFireBehavior = function() {
 	var this_ = this;
-	return new RepeatedFireBehavior(1.0, function() {
+	return new RepeatedFireBehavior(1.8, function() {
 		var toAdd = [];
-		for (var i = 0; i < 16; ++i) {
+		for (var i = 0; i < 14; ++i) {
 			// 2/3 MATH.PI <= angle <= 4/3 MATH.PI
-			var angle = 0.6666 * Math.PI + (i / 16) * (Math.PI * 0.6666);
+			var angle = 0.6666 * Math.PI + (i / 14) * (Math.PI * 0.6666);
 			toAdd.push(new Laser(this_.position, angle));
 		}
 		return toAdd;
