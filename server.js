@@ -46,7 +46,7 @@ startGame = function() {
 		clients[i].playerId = i;
 		clients[i].entities = {};
 	}
-	setInterval(pushUpdates, 1000 / 500);
+	setInterval(pushUpdates, 1000 / 100);
 }
 
 // Push updates to all clients
