@@ -3,7 +3,6 @@ __extends__(Missile, Entity);
 function Missile(position, acceleration) {
 	Entity.prototype.constructor.call(this, position, 5, 0);
 
-	this.velocity = new Vector(0, 0);
 	this.acceleration = acceleration;
 	if (this.acceleration.x < 0) this.angle = Math.PI;
 

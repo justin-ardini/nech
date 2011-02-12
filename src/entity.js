@@ -1,9 +1,13 @@
 function Entity(position, radius, health) {
 	this.position = position;
+	this.velocity = new Vector(0, 0);
 	this.radius = radius;
 	this.health = health;
 	this.maxHealth = health;
 	this.angle = 0;
+
+	this.playerId = null;
+	this.netId = null;
 }
 
 Entity.prototype.draw = function(c) {
