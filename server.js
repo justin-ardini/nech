@@ -79,12 +79,8 @@ socket.on('connection', function(client) {
 
 	// Update list of entities for that client
 	client.on('message', function(message) {
-		// console.log('Received message from client ' + this.playerId);
-		if (message.entities.length > 0) {
-			var playerId = message.entities[0].playerId;
-			if (clients[playerId] !== undefined) {
-				clients[playerId].entities = message.entities;
-			}
+		if (clients[message.playerId] !== undefined) {
+			clients[message.playerId].entities = message.entities;
 		}
 	});
 

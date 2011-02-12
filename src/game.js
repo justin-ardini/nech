@@ -83,7 +83,7 @@ Game.prototype.getMessageForServer = function() {
 			health: local.health
 		});
 	}
-	return { entities: entities };
+	return { playerId: this.playerId, entities: entities };
 };
 
 Game.prototype.setRemotesFromMessage = function(message) {
@@ -97,11 +97,6 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		var remote = message.entities[i];
 		newMap[remote.playerId + ':' + remote.netId] = remote;
 	}
-
-	// var oldL = [], newL = [];
-	// for (var x in oldMap) oldL.push(x);
-	// for (var x in newMap) newL.push(x);
-	// console.log(oldL, newL);
 
 	// update all existing entities
 	for (var id in oldMap) {
