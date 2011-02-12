@@ -34,6 +34,14 @@ Game.prototype.addEntity = function(entity) {
 	this.entities.push(entity);
 };
 
+Game.prototype.removeEntity = function(entity) {
+	for (var i = 0; i < this.entities.length; ++i) {
+		if (entity == this.entities[i]) {
+			this.entities[i].splice(i, 1);
+		}
+	}
+};
+
 Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 

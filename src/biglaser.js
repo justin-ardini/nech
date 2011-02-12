@@ -1,7 +1,14 @@
 __extends__(BigLaser, Entity);
+BIG_LASER_LIFE_SPAN = 2;
 
 function BigLaser(position) {
 	Entity.prototype.constructor.call(this, position, 15);
+	this.timeLeft = BIG_LASER_LIFE_SPAN;
+}
+
+BigLaser.prototype.tick = function(seconds) {
+	this.timeLeft -= seconds;
+	Entity.prototype.tick.call(this, seconds);
 }
 
 BigLaser.prototype.draw = function(c) {

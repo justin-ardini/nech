@@ -21,12 +21,9 @@ ChargeFireBehavior.prototype.tick = function(seconds, game) {
 
 ChargeFireBehavior.prototype.keydown = function(game) {
 	this.charging = true;
-	var toAdd = this.createEntity();
-	for (var i = 0; i < toAdd.length; ++i) {
-		game.addEntity(toAdd[i]);
-	}
 };
 
 ChargeFireBehavior.prototype.keyup = function(game) {
+	console.log('no longer charging');
 	this.charging = false;
 };
