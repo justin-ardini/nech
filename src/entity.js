@@ -26,16 +26,6 @@ Entity.prototype.tick = function(seconds) {
 Entity.prototype.die = function(game) {
 };
 
-// Shots should be added with game.addEntity()
-Entity.prototype.primaryShot = function(game) {
-	return;
-}
-
-// Shots should be added with game.addEntity()
-Entity.prototype.secondaryShot = function(game) {
-	return;
-}
-
 Entity.prototype.draw = function(c) {
 	c.save();
 	c.translate(this.position.x, this.position.y);

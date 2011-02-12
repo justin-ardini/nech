@@ -1,22 +1,23 @@
-var THE_ONE_DELAY1 = 0.1;
-var THE_ONE_DELAY2 = 1.0;
-
 __extends__(TheOne, Entity);
 
 function TheOne(position) {
 	Entity.prototype.constructor.call(this, position, 15);
 	this.health = this.maxHealth = 100;
-}
+};
 
-TheOne.prototype.primaryShot = function(game) {
-	game.addEntity(new Laser(this.position, 0));
-	return THE_ONE_DELAY1;
-}
+TheOne.prototype.getPrimaryFireBehavior = function() {
+	var this_ = this;
+	return new RepeatedFireBehavior(0.1, function() {
+		return [new Laser(this_.position, 0)];
+	});
+};
 
-TheOne.prototype.secondaryShot = function(game) {
-	game.addEntity(new Missile(this.position, 0));
-	return THE_ONE_DELAY2;
-}
+TheOne.prototype.getSecondaryFireBehavior = function() {
+	var this_ = this;
+	return new RepeatedFireBehavior(1.0, function() {
+		return [new Missile(this_.position, 0)];
+	});
+};
 
 TheOne.prototype.drawImpl = function(c) {
 	c.beginPath();
