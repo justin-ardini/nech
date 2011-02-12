@@ -2,7 +2,7 @@ __extends__(TestEnemy, Entity);
 
 function TestEnemy(position) {
 	Entity.prototype.constructor.call(this, position, 90);
-	this.health = this.maxHealth = 1000;
+	this.health = this.maxHealth = 500;
 	var this_ = this;
 	this.behavior = new ChargeFireBehavior(4.0, function() {
 		return new BigLaser(this_.position);

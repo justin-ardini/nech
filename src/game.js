@@ -138,6 +138,13 @@ Game.prototype.setRemotesFromMessage = function(message) {
 	for (var id in newMap) {
 		if (!(id in oldMap)) {
 			var e = newMap[id];
+
+			if (e.playerId == this.playerId) {
+				// don't let the server add entities for us (prevents a bug where we would
+				// remove one of our entities only to have the server immediately add it back)
+				continue;
+			}
+
 			var entity = new classMap[e.type](new Vector(e.position.x, e.position.y));
 			entity.playerId = e.playerId;
 			entity.netId = e.netId;
