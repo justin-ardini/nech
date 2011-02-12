@@ -23,6 +23,7 @@ Game.prototype.tick = function(seconds) {
 	this.controller.tick(seconds);
 	this.theOne.tick(seconds);
 	this.highlightAngle += seconds * 0.1;
+	Particle.tick(seconds);
 };
 
 Game.prototype.draw = function(c) {
@@ -33,6 +34,7 @@ Game.prototype.draw = function(c) {
 		this.enemies[i].draw(c);
 	}
 	this.theOne.draw(c);
+	Particle.draw(c);
 };
 
 Game.prototype.drawHighlight = function(c) {

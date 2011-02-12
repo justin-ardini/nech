@@ -9,7 +9,7 @@ function PlayerController(entity) {
 }
 
 PlayerController.prototype.tick = function(seconds) {
-	var speed = 100;
+	var speed = 300;
 	if (this.upKey) {
 		this.entity.center.y -= speed * seconds;
 	}
