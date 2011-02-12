@@ -2,7 +2,7 @@ __extends__(TestEnemy, Entity);
 
 function TestEnemy(position) {
 	Entity.prototype.constructor.call(this, position, 90);
-	this.health = this.maxHealth = 500;
+	this.health = this.maxHealth = 1;
 	var this_ = this;
 	this.behavior = new ChargeFireBehavior(4.0, function() {
 		return new BigLaser(this_.position);
@@ -33,6 +33,20 @@ TestEnemy.prototype.onFromServer = function(entity) {
 TestEnemy.prototype.onToServer = function(entity) {
 	entity.charging = this.behavior.charging;
 }
+
+TestEnemy.prototype.onDie = function(game) {
+	for (var i = 0; i < 40; i++) {
+		var angle = Math.PI * 2 * Math.random();
+		var vel = Vector.fromAngle(angle).mul(200 * Math.random());
+		Particle().position(this.position).velocity(vel).line().radius(300).expand(0.001).angle(angle);
+
+		vel = Vector.fromAngle(Math.PI * 2 * Math.random()).mul(400 * Math.random());
+		Particle().position(this.position).velocity(vel).circle().radius(20).expand(0.001);
+
+		vel = Vector.fromAngle(Math.PI * 2 * Math.random()).mul(100 * Math.random());
+		Particle().position(this.position).velocity(vel).triangle().radius(20).expand(0.001);
+	}
+};
 
 TestEnemy.prototype.drawImpl = function(c) {
 	for (var i = 0; i < 30; i++) {
