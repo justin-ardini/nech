@@ -23,14 +23,7 @@ var httpServer = http.createServer(function (request, response) {
 		...
 	});
 	*/
-}
-
-// If page isn't found
-send404 = function(res){
-  res.writeHead(404);
-  res.write('404');
-  res.end();
-};
+});
 
 
 httpServer.listen(PORT);
@@ -51,6 +44,7 @@ socket.on('connection', function(client) {
 		//			listener.clients[count].send(json({ action: 'fetch' }));
 		//		}
 		// }
+	});
 
 	client.on('message', function(message) {
 		// Broadcast message to all clients
