@@ -1,11 +1,14 @@
-function PlayerController(entity) {
+function PlayerController(game, entity) {
+	this.game = game;
 	this.entity = entity;
+	this.fireDelay = 0;
 
 	// these will automatically be set by Game
 	this.upKey = false;
 	this.downKey = false;
 	this.leftKey = false;
 	this.rightKey = false;
+	this.shootKey = false;
 }
 
 PlayerController.prototype.tick = function(seconds) {
@@ -21,5 +24,11 @@ PlayerController.prototype.tick = function(seconds) {
 	}
 	if (this.rightKey) {
 		this.entity.position.x += speed * seconds;
+	}
+
+	this.fireDelay -= seconds;
+	if (this.fireDelay <= 0 && this.shootKey) {
+		this.game.locals.push(new Missile(this.entity.position, new Vector(200, 0)));
+		this.fireDelay = 1;
 	}
 };

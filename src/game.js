@@ -2,6 +2,11 @@ var KEY_UP = 0;
 var KEY_DOWN = 1;
 var KEY_LEFT = 2;
 var KEY_RIGHT = 3;
+var KEY_SHOOT = 4;
+
+var GAME_WIDTH = 800;
+var GAME_HEIGHT = 600;
+
 var classMap = { 
 	'TheOne': TheOne,
 	'Missile': Missile
@@ -14,13 +19,11 @@ function Game(id, type, pos) {
 	this.highlightAngle = 0;
 	this.locals = [player];
 	this.remotes = [];
-	this.controller = new PlayerController(player);
+	this.controller = new PlayerController(this, player);
 
 	// TODO: remove this when locals and remotes are implemented
-	this.theOne = player;
-	this.theOne.position = new Vector(300, 300);
 	this.remotes.push(new TestEnemy(new Vector(400, 400)));
-	this.remotes.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
+	this.remotes.push(new TestEnemy(new Vector(600, 200)));
 	this.paused = false;
 }
 
@@ -30,7 +33,13 @@ Game.prototype.tick = function(seconds) {
 	}
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.locals.length; i++) {
-		this.locals[i].tick(seconds);
+		var local = this.locals[i];
+		local.tick(seconds);
+		if (local.position.x + local.radius < 0 || local.position.x - local.radius > GAME_WIDTH ||
+			local.position.y + local.radius < 0 || local.position.y - local.radius > GAME_HEIGHT) {
+			// remove local from locals while simultaneously making sure we don't skip the next local
+			this.locals.splice(i--, 1);
+		}
 	}
 	for (var i = 0; i < this.remotes.length; i++) {
 		this.remotes[i].tick(seconds);
@@ -59,6 +68,10 @@ Game.prototype.draw = function(c) {
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 	this.drawHighlight(c);
 
+	var text = this.locals.length + ' locals, ' + this.remotes.length + ' remotes';
+	c.fillStyle = 'black';
+	c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 20);
+
 	c.fillStyle = 'black';
 	if (this.paused) {
 		c.textAlign = 'center';
@@ -70,7 +83,6 @@ Game.prototype.draw = function(c) {
 	for (var i = 0; i < this.remotes.length; i++) {
 		this.remotes[i].draw(c);
 	}
-	this.theOne.draw(c);
 	Particle.draw(c);
 };
 
@@ -97,6 +109,7 @@ Game.prototype.keyDown = function(key) {
 		case KEY_DOWN: this.controller.downKey = true; break;
 		case KEY_LEFT: this.controller.leftKey = true; break;
 		case KEY_RIGHT: this.controller.rightKey = true; break;
+		case KEY_SHOOT: this.controller.shootKey = true; break;
 	}
 };
 
@@ -106,5 +119,6 @@ Game.prototype.keyUp = function(key) {
 		case KEY_DOWN: this.controller.downKey = false; break;
 		case KEY_LEFT: this.controller.leftKey = false; break;
 		case KEY_RIGHT: this.controller.rightKey = false; break;
+		case KEY_SHOOT: this.controller.shootKey = false; break;
 	}
 };
