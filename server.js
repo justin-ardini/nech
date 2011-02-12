@@ -54,7 +54,7 @@ pushUpdates = function() {
 		}
 	}
 	for (var i = 0; i < len; ++i) {
-		clients[i].send(entities);
+		clients[i].send({entities: entities});
 	}
 }
 
@@ -70,12 +70,9 @@ socket.on('connection', function(client) {
 	// Update list of entities for that client
 	client.on('message', function(message) {
 		console.log('Received message from client ' + this.playerId);
-		var netId = message.netId;
-		if (clients[i].entities[netId] === undefined) {
-			clients[i].entities[netId] = { playerId: i, netId: netId, type: message.type, position: message.position, velocity: message.velocity, angle: message.angle };
-		} else {
-			// May want to update, but for now, just replace
-			clients[i].entities[netId] = { playerId: i, netId: netId, type: message.type, position: message.position, velocity: message.velocity, angle: message.angle };
+		if (message.entities.length > 0) {
+			var playerId = message.entities[0].playerId;
+			clients[playerId].entities = message.entities;
 		}
 	});
 
