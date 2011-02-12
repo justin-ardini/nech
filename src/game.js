@@ -38,6 +38,7 @@ Game.prototype.removeEntity = function(entity) {
 	for (var i = 0; i < this.entities.length; ++i) {
 		if (entity == this.entities[i]) {
 			this.entities.splice(i, 1);
+			return;
 		}
 	}
 };
