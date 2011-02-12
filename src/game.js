@@ -67,8 +67,8 @@ Game.prototype.tick = function(seconds) {
 		
 		// keep players within bounds
 		if (entity.maxHealth > 0) {
-			entity.position.x = Math.max(entity.radius, Math.min(GAME_WIDTH - entity.radius, entity.position.x));
-			entity.position.y = Math.max(entity.radius, Math.min(GAME_HEIGHT - entity.radius, entity.position.y));
+			entity.position.x = Math.max(0, Math.min(GAME_WIDTH, entity.position.x));
+			entity.position.y = Math.max(0, Math.min(GAME_HEIGHT, entity.position.y));
 		}
 	}
 

@@ -72,10 +72,9 @@ function doDamage(entities) {
 		var entity = entities[i];
 		var id = entity.playerId + ':' + entity.netId;
 		var collision = collisionMap[entity.type];
-		var radius = collision.radius;
 		var isOffScreen = (collision.type == 'circle' && (
-			entity.position.x + radius < 0 || entity.position.x - radius > GAME_WIDTH ||
-			entity.position.y + radius < 0 || entity.position.y - radius > GAME_HEIGHT));
+			entity.position.x < 0 || entity.position.x > GAME_WIDTH ||
+			entity.position.y < 0 || entity.position.y > GAME_HEIGHT));
 		if (id in idsToRemove || isOffScreen) {
 			entities.splice(i--, 1);
 		}
