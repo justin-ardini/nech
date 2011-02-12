@@ -1,3 +1,6 @@
+var TEST_ENEMY_DELAY1 = 1.0;
+var TEST_ENEMY_DELAY2 = 5.0;
+
 __extends__(TestEnemy, Entity);
 
 function TestEnemy(position) {
@@ -5,13 +8,17 @@ function TestEnemy(position) {
 }
 
 TestEnemy.prototype.primaryShot = function(game) {
-	for (var i = 1; i <= 20; ++i) {
-		game.addEntity(new Laser(this.position, Math.PI));
+	for (var i = 0; i < 20; ++i) {
+		// -2/3 MATH.PI <= angle <= 2/3 MATH.PI
+		var angle = -0.6666 * Math.PI + (i / 20) * (Math.PI * 1.3333);
+		game.addEntity(new Laser(this.position, angle));
 	}
+	return TEST_ENEMY_DELAY1;
 }
 
 TestEnemy.prototype.secondaryShot = function(game) {
 	game.addEntity(new Missile(this.position, Math.PI));
+	return TEST_ENEMY_DELAY2;
 }
 
 TestEnemy.prototype.drawImpl = function(c) {

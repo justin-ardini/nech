@@ -1,3 +1,6 @@
+var THE_ONE_DELAY1 = 0.1;
+var THE_ONE_DELAY2 = 1.0;
+
 __extends__(TheOne, Entity);
 
 function TheOne(position) {
@@ -6,10 +9,12 @@ function TheOne(position) {
 
 TheOne.prototype.primaryShot = function(game) {
 	game.addEntity(new Laser(this.position, 0));
+	return THE_ONE_DELAY1;
 }
 
 TheOne.prototype.secondaryShot = function(game) {
 	game.addEntity(new Missile(this.position, 0));
+	return THE_ONE_DELAY2;
 }
 
 TheOne.prototype.drawImpl = function(c) {
