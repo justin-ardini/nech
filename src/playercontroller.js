@@ -31,8 +31,6 @@ PlayerController.prototype.tick = function(seconds) {
 	var speed = this.entity instanceof TheOne ? 200 : 75;
 	this.entity.velocity.x = speed * (this.rightKey - this.leftKey);
 	this.entity.velocity.y = speed * (this.downKey - this.upKey);
-	this.entity.position.x = Math.max(this.entity.radius, Math.min(GAME_WIDTH - this.entity.radius, this.entity.position.x));
-	this.entity.position.y = Math.max(this.entity.radius, Math.min(GAME_HEIGHT - this.entity.radius, this.entity.position.y));
 
 	// shield
 	this.entity.usingShield = this.shieldKey;
