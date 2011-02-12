@@ -39,6 +39,7 @@ var NUM_CLIENTS = 2;
 // Start a new game, giving the player role to the first one who joined
 // Assumes NUM_CLIENTS clients
 startGame = function() {
+	console.log('Starting the game with ' + NUM_CLIENTS + ' clients.');
 	clients[0].send({ playerId: 0, type: 'TheOne', position: [100, 100] });
 	clients[1].send({ playerId: 1, type: 'TestEnemy', position: [500, 200] });
 }
@@ -79,6 +80,7 @@ socket.on('connection', function(client) {
 	client.on('disconnect', function() {
 		for (var i = 0; i < clients.length; ++i) {
 			if (this === clients[i]) {
+				console.log('Removing client #' + i);
 				clients.splice(i, 1);
 			}
 		}
