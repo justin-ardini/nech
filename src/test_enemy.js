@@ -25,11 +25,21 @@ TestEnemy.prototype.getSecondaryFireBehavior = function() {
 	});
 };
 
+TestEnemy.prototype.onFromServer = function(entity) {
+	console.log('receiving from server: charging = ' + entity.charging);
+	//this.charging = entity.charging;
+}
+
+TestEnemy.prototype.onToServer = function(entity) {
+	console.log('sending to server: charging = ' + entity.charging);
+	entity.charging = true; 
+}
+
 TestEnemy.prototype.drawImpl = function(c) {
 	for (var i = 0; i < 30; i++) {
 		var angle = -Math.PI / 3 + Math.PI * 2/3 * Math.random();
 		var vel = Vector.fromAngle(angle).mul(-200 * Math.random());
-		Particle().position(this.position).velocity(vel).line().radius(10).expand(0.001).angle(angle);
+		Particle().position(this.position.sub(1, 0)).velocity(vel).line().radius(10).expand(0.001).angle(angle);
 	}
 	c.beginPath();
 	c.lineTo(-60, 0);
