@@ -226,3 +226,12 @@ Game.prototype.keyUp = function(key) {
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = false; break;
 	}
 };
+
+Game.prototype.containsEntity = function(entity) {
+	for (var i = 0; i < this.entities.length; i++) {
+		if (this.entities[i] == entity) {
+			return true;
+		}
+	}
+	return false;
+};

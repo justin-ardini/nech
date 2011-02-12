@@ -22,6 +22,10 @@ function PlayerController(game, entity) {
 }
 
 PlayerController.prototype.tick = function(seconds) {
+	if (!this.game.containsEntity(this.entity)) {
+		return;
+	}
+	
 	var speed = this.entity instanceof TheOne ? 200 : 50;
 	this.entity.velocity.x = speed * (this.rightKey - this.leftKey);
 	this.entity.velocity.y = speed * (this.downKey - this.upKey);
