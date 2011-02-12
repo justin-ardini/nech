@@ -20,8 +20,7 @@ function Game(playerId, type, pos) {
 	this.nextNetId = 0;
 	this.playerId = playerId;
 	this.highlightAngle = 0;
-	this.locals = [];
-	this.remotes = [];
+	this.entities = [];
 	this.paused = false;
 
 	var player = new classMap[type](pos);
@@ -32,29 +31,23 @@ function Game(playerId, type, pos) {
 Game.prototype.addEntity = function(entity) {
 	entity.playerId = this.playerId;
 	entity.netId = this.nextNetId++;
-	this.locals.push(entity);
+	this.entities.push(entity);
 };
 
 Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 
-	// update locals
-	for (var i = 0; i < this.locals.length; i++) {
-		var local = this.locals[i];
-		local.tick(seconds);
-		if ((local.maxHealth > 0 && local.health <= 0) ||
-			local.position.x + local.radius < 0 || local.position.x - local.radius > GAME_WIDTH ||
-			local.position.y + local.radius < 0 || local.position.y - local.radius > GAME_HEIGHT) {
-			// remove local from locals while simultaneously making sure we don't skip the next local
-			this.locals.splice(i--, 1);
-		}
-	}
+	// update entities
 	this.controller.tick(seconds);
-
-	// update remotes (these changes are just for smoothing over network lag,
-	// the changes are discarded when new information comes from the server)
-	for (var i = 0; i < this.remotes.length; i++) {
-		this.remotes[i].tick(seconds);
+	for (var i = 0; i < this.entities.length; i++) {
+		var entity = this.entities[i];
+		entity.tick(seconds);
+		
+		// keep players within bounds
+		if (entity.maxHealth > 0) {
+			entity.position.x = Math.max(entity.radius, Math.min(GAME_WIDTH - entity.radius, entity.position.x));
+			entity.position.y = Math.max(entity.radius, Math.min(GAME_HEIGHT - entity.radius, entity.position.y));
+		}
 	}
 
 	// update the visuals
@@ -64,23 +57,24 @@ Game.prototype.tick = function(seconds) {
 
 Game.prototype.getMessageForServer = function() {
 	var entities = [];
-	for (var i = 0; i < this.locals.length; i++) {
-		var local = this.locals[i];
+	for (var i = 0; i < this.entities.length; i++) {
+		var entity = this.entities[i];
+		if (entity.playerId != this.playerId) continue;
 		var type = '<not in classMap>';
 		for (var className in classMap) {
-			if (local instanceof classMap[className]) {
+			if (entity instanceof classMap[className]) {
 				type = className;
 				break;
 			}
 		}
 		entities.push({
 			playerId: this.playerId,
-			netId: local.netId,
+			netId: entity.netId,
 			type: type,
-			position: { x: local.position.x, y: local.position.y },
-			velocity: { x: local.velocity.x, y: local.velocity.y },
-			angle: local.angle,
-			health: local.health
+			position: { x: entity.position.x, y: entity.position.y },
+			velocity: { x: entity.velocity.x, y: entity.velocity.y },
+			angle: entity.angle,
+			health: entity.health
 		});
 	}
 	return { playerId: this.playerId, entities: entities };
@@ -89,64 +83,54 @@ Game.prototype.getMessageForServer = function() {
 Game.prototype.setRemotesFromMessage = function(message) {
 	// create maps of playerId:netId to the respective objects
 	var oldMap = {}, newMap = {};
-	for (var i = 0; i < this.remotes.length; i++) {
-		var remote = this.remotes[i];
-		oldMap[remote.playerId + ':' + remote.netId] = remote;
+	for (var i = 0; i < this.entities.length; i++) {
+		var entity = this.entities[i];
+		oldMap[entity.playerId + ':' + entity.netId] = entity;
 	}
 	for (var i = 0; i < message.entities.length; i++) {
-		var remote = message.entities[i];
-		newMap[remote.playerId + ':' + remote.netId] = remote;
+		var entity = message.entities[i];
+		newMap[entity.playerId + ':' + entity.netId] = entity;
 	}
 
 	// update all existing entities
 	for (var id in oldMap) {
 		if (id in newMap) {
-			var oldRemote = oldMap[id];
-			var newRemote = newMap[id];
-			oldRemote.position.x = newRemote.position.x;
-			oldRemote.position.y = newRemote.position.y;
-			oldRemote.velocity.x = newRemote.velocity.x;
-			oldRemote.velocity.y = newRemote.velocity.y;
-			oldRemote.angle = newRemote.angle;
-			oldRemote.health = newRemote.health;
+			var oldEntity = oldMap[id];
+			var newEntity = newMap[id];
+			if (oldEntity.playerId != this.playerId) {
+				oldEntity.position.x = newEntity.position.x;
+				oldEntity.position.y = newEntity.position.y;
+				oldEntity.velocity.x = newEntity.velocity.x;
+				oldEntity.velocity.y = newEntity.velocity.y;
+				oldEntity.angle = newEntity.angle;
+			}
+			oldEntity.health = newEntity.health;
+			oldEntity.seenFromServer = true;
 		}
 	}
 
 	// remove entities that were removed
-	for (var i = 0; i < this.remotes.length; i++) {
-		var remote = this.remotes[i];
-		var id = remote.playerId + ':' + remote.netId;
-		if (!(id in newMap)) {
-			// remove remote from remotes while simultaneously making sure we don't skip the next remote
-			this.remotes.splice(i--, 1);
+	for (var i = 0; i < this.entities.length; i++) {
+		var entity = this.entities[i];
+		var id = entity.playerId + ':' + entity.netId;
+		if (!(id in newMap) && entity.seenFromServer) {
+			// remove entity from entities while simultaneously making sure we don't skip the next entity
+			this.entities.splice(i--, 1);
 		}
 	}
 
 	// add new entities
 	for (var id in newMap) {
 		if (!(id in oldMap)) {
-			var r = newMap[id];
-
-			// dont't add our own objects to remotes (they are already in locals)
-			if (r.playerId == this.playerId) {
-				// but update their health
-				for (var i = 0; i < this.locals.length; i++) {
-					var local = this.locals[i];
-					if (id == local.playerId + ':' + local.netId) {
-						local.health = r.health;
-						break;
-					}
-				}
-				continue;
-			}
-
-			var remote = new classMap[r.type](new Vector(r.position.x, r.position.y));
-			remote.playerId = r.playerId;
-			remote.netId = r.netId;
-			remote.velocity = new Vector(r.velocity.x, r.velocity.y);
-			remote.angle = r.angle;
-			remote.health = r.health;
-			this.remotes.push(remote);
+			var e = newMap[id];
+			var entity = new classMap[e.type](new Vector(e.position.x, e.position.y));
+			entity.playerId = e.playerId;
+			entity.netId = e.netId;
+			entity.velocity = new Vector(e.velocity.x, e.velocity.y);
+			entity.angle = e.angle;
+			entity.health = e.health;
+			entity.seenFromServer = true;
+			this.entities.push(entity);
 		}
 	}
 };
@@ -162,22 +146,23 @@ Game.prototype.draw = function(c) {
 	this.drawHighlight(c);
 
 	c.fillStyle = 'black';
-	c.textAlign = 'right';
-	c.fillText(this.locals.length + ' locals, ' + this.remotes.length + ' remotes', c.canvas.width - 10, c.canvas.height - 10);
-
-	c.fillStyle = 'black';
 	c.strokeStyle = 'black';
 	if (this.paused) {
 		c.textAlign = 'center';
 		c.fillText("Sorry, you were disconnected.", c.canvas.width / 2, c.canvas.height / 2);
 	}
-	for (var i = 0; i < this.locals.length; i++) {
-		this.locals[i].draw(c);
-	}
-	for (var i = 0; i < this.remotes.length; i++) {
-		this.remotes[i].draw(c);
+	var locals = 0, remotes = 0;
+	for (var i = 0; i < this.entities.length; i++) {
+		var entity = this.entities[i];
+		if (entity.playerId == this.playerId) locals++;
+		else remotes++;
+		entity.draw(c);
 	}
 	Particle.draw(c);
+
+	c.fillStyle = 'black';
+	c.textAlign = 'right';
+	c.fillText(locals + ' locals, ' + remotes + ' remotes', c.canvas.width - 10, c.canvas.height - 10);
 };
 
 Game.prototype.drawHighlight = function(c) {

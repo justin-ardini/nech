@@ -5,6 +5,14 @@ function Entity(position, radius) {
 	this.health = 0;
 	this.maxHealth = 0;
 	this.angle = 0;
+	
+	// this is necessary to prevent a race condition:
+	// 1. server sends client the entity list
+	// 2. client creates entity
+	// 3. client gets what server sent, which of course doesn't contain entity
+	// 4. client deletes new entity
+	// solution: only delete something when it's been seen from the server first
+	this.seenFromServer = false;
 
 	this.playerId = null;
 	this.netId = null;
