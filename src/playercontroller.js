@@ -16,6 +16,8 @@ function PlayerController(game, entity) {
 	this.rightKey = false;
 	this.shootMainKey = false;
 	this.shootAltKey = false;
+	this.shieldKey = false;
+
 	// these aren't set automatically
 	this.prevShootMainKey = false;
 	this.prevShootAltKey = false;
@@ -31,6 +33,10 @@ PlayerController.prototype.tick = function(seconds) {
 	this.entity.velocity.y = speed * (this.downKey - this.upKey);
 	this.entity.position.x = Math.max(this.entity.radius, Math.min(GAME_WIDTH - this.entity.radius, this.entity.position.x));
 	this.entity.position.y = Math.max(this.entity.radius, Math.min(GAME_HEIGHT - this.entity.radius, this.entity.position.y));
+
+	// shield
+	this.entity.usingShield = this.shieldKey;
+	if (this.shieldKey) this.entity.shield = Math.max(0, this.entity.shield - 10 * seconds);
 
 	this.primaryFireBehavior.tick(seconds, this.game);
 	this.secondaryFireBehavior.tick(seconds, this.game);

@@ -72,6 +72,7 @@
 	var JS_KEY_RIGHT = 39;
 	var JS_KEY_SHOOT_MAIN = 'Z'.charCodeAt(0);
 	var JS_KEY_SHOOT_ALT = 'X'.charCodeAt(0);
+	var JS_KEY_SHIELD = 'C'.charCodeAt(0);
 
 	$(document).keydown(function(e) {
 		switch (e.which) {
@@ -81,6 +82,7 @@
 			case JS_KEY_RIGHT: game.keyDown(KEY_RIGHT); break;
 			case JS_KEY_SHOOT_MAIN: game.keyDown(KEY_SHOOT_MAIN); break;
 			case JS_KEY_SHOOT_ALT: game.keyDown(KEY_SHOOT_ALT); break;
+			case JS_KEY_SHIELD: game.keyDown(KEY_SHIELD); break;
 			default: return;
 		}
 
@@ -96,6 +98,7 @@
 			case JS_KEY_RIGHT: game.keyUp(KEY_RIGHT); break;
 			case JS_KEY_SHOOT_MAIN: game.keyUp(KEY_SHOOT_MAIN); break;
 			case JS_KEY_SHOOT_ALT: game.keyUp(KEY_SHOOT_ALT); break;
+			case JS_KEY_SHIELD: game.keyUp(KEY_SHIELD); break;
 			default: return;
 		}
 

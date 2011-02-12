@@ -4,6 +4,7 @@ var KEY_LEFT = 2;
 var KEY_RIGHT = 3;
 var KEY_SHOOT_MAIN = 4;
 var KEY_SHOOT_ALT = 5;
+var KEY_SHIELD = 6;
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
@@ -213,6 +214,7 @@ Game.prototype.keyDown = function(key) {
 		case KEY_RIGHT: this.controller.rightKey = true; break;
 		case KEY_SHOOT_MAIN: this.controller.shootMainKey = true; break;
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = true; break;
+		case KEY_SHIELD: this.controller.shieldKey = true; break;
 	}
 };
 
@@ -224,6 +226,7 @@ Game.prototype.keyUp = function(key) {
 		case KEY_RIGHT: this.controller.rightKey = false; break;
 		case KEY_SHOOT_MAIN: this.controller.shootMainKey = false; break;
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = false; break;
+		case KEY_SHIELD: this.controller.shieldKey = false; break;
 	}
 };
 
