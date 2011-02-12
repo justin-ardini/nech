@@ -77,7 +77,9 @@ socket.on('connection', function(client) {
 		console.log('Received message from client ' + this.playerId);
 		if (message.entities.length > 0) {
 			var playerId = message.entities[0].playerId;
-			clients[playerId].entities = message.entities;
+			if (clients[playerId] !== undefined) {
+				clients[playerId].entities = message.entities;
+			}
 		}
 	});
 
