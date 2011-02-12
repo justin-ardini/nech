@@ -3,6 +3,8 @@ __extends__(TheOne, Entity);
 function TheOne(position) {
 	Entity.prototype.constructor.call(this, position, 15);
 	this.health = this.maxHealth = 50;
+	this.shield = this.maxShield = 100;
+	this.usingShield = false;
 };
 
 TheOne.prototype.getPrimaryFireBehavior = function() {
@@ -34,6 +36,13 @@ TheOne.prototype.onDie = function(game) {
 };
 
 TheOne.prototype.drawImpl = function(c) {
+	if (this.usingShield) {
+		c.beginPath();
+		c.arc(0, 0, 35, 0, Math.PI * 2, false);
+		c.arc(0, 0, 35 + this.shield * 5 / this.maxShield, 0, Math.PI * 2, true);
+		c.fill();
+	}
+	
 	c.beginPath();
 	c.lineTo(-5, -2);
 	c.lineTo(-10, -15);
