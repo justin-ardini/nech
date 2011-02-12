@@ -8,6 +8,7 @@ function PlayerController(game, entity) {
 	this.entity = entity;
 	this.primaryFireBehavior = entity.getPrimaryFireBehavior();
 	this.secondaryFireBehavior = entity.getSecondaryFireBehavior();
+	this.tertiaryFireBehavior = entity.getTertiaryFireBehavior();
 
 	// these will automatically be set by Game
 	this.upKey = false;
@@ -17,6 +18,7 @@ function PlayerController(game, entity) {
 	this.shootMainKey = false;
 	this.shootAltKey = false;
 	this.shieldKey = false;
+	this.shootAlt2Key = false;
 
 	// these aren't set automatically
 	this.prevShootMainKey = false;
@@ -40,11 +42,15 @@ PlayerController.prototype.tick = function(seconds) {
 
 	this.primaryFireBehavior.tick(seconds, this.game);
 	this.secondaryFireBehavior.tick(seconds, this.game);
+	this.tertiaryFireBehavior.tick(seconds, this.game);
 	if (this.shootMainKey) {
 		this.primaryFireBehavior.keydown(this.game);
 	}
 	if (this.shootAltKey) {
 		this.secondaryFireBehavior.keydown(this.game);
+	}
+	if (this.shootAlt2Key && this.tertiaryFireBehavior !== null) {
+		this.tertiaryFireBehavior.keydown(this.game);
 	}
 
 	if (this.prevShootMainKey && !this.shootMainKey) {

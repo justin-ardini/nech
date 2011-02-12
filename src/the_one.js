@@ -21,6 +21,11 @@ TheOne.prototype.getSecondaryFireBehavior = function() {
 	});
 };
 
+// Shields are taken care of elsewhere, do nothing
+TheOne.prototype.getTertiaryFireBehavior = function() {
+	return null;
+};
+
 TheOne.prototype.onFromServer = function(entity) {
 	this.shield = entity.shield;
 	this.usingShield = entity.usingShield;

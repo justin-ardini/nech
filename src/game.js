@@ -5,6 +5,7 @@ var KEY_RIGHT = 3;
 var KEY_SHOOT_MAIN = 4;
 var KEY_SHOOT_ALT = 5;
 var KEY_SHIELD = 6;
+var KEY_SHOOT_ALT2 = 6;
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
@@ -14,7 +15,8 @@ var classMap = {
 	'TheOne': TheOne,
 	'Missile': Missile,
 	'TestEnemy': TestEnemy,
-	'BigLaser': BigLaser
+	'BigLaser': BigLaser,
+	'Spinner': Spinner
 };
 
 function Game(playerId, type, pos) {
@@ -56,10 +58,10 @@ Game.prototype.tick = function(seconds) {
 	for (var i = 0; i < this.entities.length; i++) {
 		var entity = this.entities[i];
 		entity.tick(seconds, this);
-		if (entity instanceof classMap['TheOne']) {
+		if (entity instanceof TheOne) {
 			this.playerAlive = true;
 		}
-		if (entity instanceof classMap['TestEnemy']) {
+		if (entity instanceof TestEnemy) {
 			this.enemyAlive = true;
 		}
 		
@@ -236,7 +238,7 @@ Game.prototype.keyDown = function(key) {
 		case KEY_RIGHT: this.controller.rightKey = true; break;
 		case KEY_SHOOT_MAIN: this.controller.shootMainKey = true; break;
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = true; break;
-		case KEY_SHIELD: this.controller.shieldKey = true; break;
+		case KEY_SHIELD: this.controller.shieldKey = true; this.controller.shootAlt2Key = true; break;
 	}
 };
 
@@ -249,6 +251,7 @@ Game.prototype.keyUp = function(key) {
 		case KEY_SHOOT_MAIN: this.controller.shootMainKey = false; break;
 		case KEY_SHOOT_ALT: this.controller.shootAltKey = false; break;
 		case KEY_SHIELD: this.controller.shieldKey = false; break;
+		case KEY_SHOOT_ALT2: this.controller.shootAlt2Key = false; this.controller.shootAlt2Key = true; break;
 	}
 };
 

@@ -19,19 +19,6 @@ function TestEnemy(position) {
 	this.chargingTimer = 0;
 };
 
-TestEnemy.prototype.getPrimaryFireBehavior = function() {
-	var this_ = this;
-	return new RepeatedFireBehavior(1.8, function() {
-		var toAdd = [];
-		for (var i = 0; i < 14; ++i) {
-			// 2/3 MATH.PI <= angle <= 4/3 MATH.PI
-			var angle = 0.6666 * Math.PI + (i / 14) * (Math.PI * 0.6666);
-			toAdd.push(new Laser(this_.position, angle));
-		}
-		return toAdd;
-	});
-};
-
 TestEnemy.prototype.tick = function(seconds) {
 	Entity.prototype.tick.call(this, seconds);
 
@@ -49,8 +36,33 @@ TestEnemy.prototype.tick = function(seconds) {
 	}
 };
 
+TestEnemy.prototype.getPrimaryFireBehavior = function() {
+	var this_ = this;
+	return new RepeatedFireBehavior(1.8, function() {
+		var toAdd = [];
+		for (var i = 0; i < 14; ++i) {
+			// 2/3 MATH.PI <= angle <= 4/3 MATH.PI
+			var angle = 0.6666 * Math.PI + (i / 14) * (Math.PI * 0.6666);
+			toAdd.push(new Laser(this_.position, angle));
+		}
+		return toAdd;
+	});
+};
+
 TestEnemy.prototype.getSecondaryFireBehavior = function() {
 	return this.behavior;
+};
+
+TestEnemy.prototype.getTertiaryFireBehavior = function() {
+	var this_ = this;
+	return new RepeatedFireBehavior(3, function() {
+		var toAdd = [];
+		for (var i = 0; i < 5; ++i) {
+			var angle = (i / 5) * (2 * Math.PI);
+			toAdd.push(new Spinner(this_.position, angle));
+		}
+		return toAdd;
+	});
 };
 
 TestEnemy.prototype.onFromServer = function(entity) {
