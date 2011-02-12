@@ -62,7 +62,8 @@
 	var JS_KEY_DOWN = 40;
 	var JS_KEY_LEFT = 37;
 	var JS_KEY_RIGHT = 39;
-	var JS_KEY_SHOOT = 32;
+	var JS_KEY_SHOOT_MAIN = 'Z'.charCodeAt(0);
+	var JS_KEY_SHOOT_ALT = 'X'.charCodeAt(0);
 
 	$(document).keydown(function(e) {
 		switch (e.which) {
@@ -70,7 +71,8 @@
 			case JS_KEY_DOWN: game.keyDown(KEY_DOWN); break;
 			case JS_KEY_LEFT: game.keyDown(KEY_LEFT); break;
 			case JS_KEY_RIGHT: game.keyDown(KEY_RIGHT); break;
-			case JS_KEY_SHOOT: game.keyDown(KEY_SHOOT); break;
+			case JS_KEY_SHOOT_MAIN: game.keyDown(KEY_SHOOT_MAIN); break;
+			case JS_KEY_SHOOT_ALT: game.keyDown(KEY_SHOOT_ALT); break;
 			default: return;
 		}
 
@@ -84,7 +86,8 @@
 			case JS_KEY_DOWN: game.keyUp(KEY_DOWN); break;
 			case JS_KEY_LEFT: game.keyUp(KEY_LEFT); break;
 			case JS_KEY_RIGHT: game.keyUp(KEY_RIGHT); break;
-			case JS_KEY_SHOOT: game.keyUp(KEY_SHOOT); break;
+			case JS_KEY_SHOOT_MAIN: game.keyUp(KEY_SHOOT_MAIN); break;
+			case JS_KEY_SHOOT_ALT: game.keyUp(KEY_SHOOT_ALT); break;
 			default: return;
 		}
 

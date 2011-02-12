@@ -2,7 +2,8 @@ var KEY_UP = 0;
 var KEY_DOWN = 1;
 var KEY_LEFT = 2;
 var KEY_RIGHT = 3;
-var KEY_SHOOT = 4;
+var KEY_SHOOT_MAIN = 4;
+var KEY_SHOOT_ALT = 5;
 
 var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
@@ -73,6 +74,7 @@ Game.prototype.draw = function(c) {
 	c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 20);
 
 	c.fillStyle = 'black';
+	c.strokeStyle = 'black';
 	if (this.paused) {
 		c.textAlign = 'center';
 		c.fillText("Sorry, you were disconnected.", c.canvas.width / 2, c.canvas.height / 2);
@@ -109,7 +111,8 @@ Game.prototype.keyDown = function(key) {
 		case KEY_DOWN: this.controller.downKey = true; break;
 		case KEY_LEFT: this.controller.leftKey = true; break;
 		case KEY_RIGHT: this.controller.rightKey = true; break;
-		case KEY_SHOOT: this.controller.shootKey = true; break;
+		case KEY_SHOOT_MAIN: this.controller.shootMainKey = true; break;
+		case KEY_SHOOT_ALT: this.controller.shootAltKey = true; break;
 	}
 };
 
@@ -119,6 +122,7 @@ Game.prototype.keyUp = function(key) {
 		case KEY_DOWN: this.controller.downKey = false; break;
 		case KEY_LEFT: this.controller.leftKey = false; break;
 		case KEY_RIGHT: this.controller.rightKey = false; break;
-		case KEY_SHOOT: this.controller.shootKey = false; break;
+		case KEY_SHOOT_MAIN: this.controller.shootMainKey = false; break;
+		case KEY_SHOOT_ALT: this.controller.shootAltKey = false; break;
 	}
 };

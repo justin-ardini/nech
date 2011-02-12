@@ -22,4 +22,5 @@ Entity.prototype.drawCollisionRadius = function(c) {
 	c.beginPath();
 	c.arc(0, 0, this.radius, 0, Math.PI * 2, false);
 	c.stroke();
+	c.strokeStyle = 'black';
 };
