@@ -1,9 +1,8 @@
 __extends__(Missile, Entity);
 
 function Missile(position, acceleration) {
-	Entity.prototype.constructor.call(this);
+	Entity.prototype.constructor.call(this, position, 5);
 
-	this.position = position;
 	this.velocity = new Vector(0, 0);
 	this.acceleration = acceleration;
 
@@ -23,10 +22,10 @@ Missile.prototype.tick = function(seconds) {
 
 Missile.prototype.drawImpl = function(c) {
 	c.beginPath();
-	c.lineTo(0, 3);
-	c.lineTo(15, 3);
-	c.lineTo(20, 0);
-	c.lineTo(15, -3);
-	c.lineTo(0, -3);
+	c.lineTo(-10, 3);
+	c.lineTo(5, 3);
+	c.lineTo(10, 0);
+	c.lineTo(5, -3);
+	c.lineTo(-10, -3);
 	c.fill();
 };
