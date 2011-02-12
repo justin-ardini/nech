@@ -31,8 +31,25 @@ $(document).ready(function() {
 	setInterval(tick, 1000 / 60);
 });
 
+var JS_KEY_UP = 38;
+var JS_KEY_DOWN = 40;
+var JS_KEY_LEFT = 37;
+var JS_KEY_RIGHT = 39;
+
 $(document).keydown(function(e) {
+	switch (e.which) {
+		case JS_KEY_UP: game.keyDown(KEY_UP); break;
+		case JS_KEY_DOWN: game.keyDown(KEY_DOWN); break;
+		case JS_KEY_LEFT: game.keyDown(KEY_LEFT); break;
+		case JS_KEY_RIGHT: game.keyDown(KEY_RIGHT); break;
+	}
 });
 
 $(document).keyup(function(e) {
+	switch (e.which) {
+		case JS_KEY_UP: game.keyUp(KEY_UP); break;
+		case JS_KEY_DOWN: game.keyUp(KEY_DOWN); break;
+		case JS_KEY_LEFT: game.keyUp(KEY_LEFT); break;
+		case JS_KEY_RIGHT: game.keyUp(KEY_RIGHT); break;
+	}
 });
