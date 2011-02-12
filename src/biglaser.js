@@ -1,5 +1,6 @@
+var BIG_LASER_LIFE_SPAN = 2;
+
 __extends__(BigLaser, Entity);
-BIG_LASER_LIFE_SPAN = 2;
 
 function BigLaser(position) {
 	Entity.prototype.constructor.call(this, position, 15);
