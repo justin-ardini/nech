@@ -28,7 +28,7 @@ PlayerController.prototype.tick = function(seconds) {
 		return;
 	}
 	
-	var speed = this.entity instanceof TheOne ? 200 : 50;
+	var speed = this.entity instanceof TheOne ? 200 : 75;
 	this.entity.velocity.x = speed * (this.rightKey - this.leftKey);
 	this.entity.velocity.y = speed * (this.downKey - this.upKey);
 	this.entity.position.x = Math.max(this.entity.radius, Math.min(GAME_WIDTH - this.entity.radius, this.entity.position.x));

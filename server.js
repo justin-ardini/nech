@@ -41,9 +41,9 @@ var NUM_CLIENTS = 2;
 // Assumes NUM_CLIENTS clients
 startGame = function() {
 	console.log('Starting the game with ' + NUM_CLIENTS + ' clients.');
-	clients[0].send({ playerId: 0, type: 'TheOne', position: [100, 100] });
+	clients[0].send({ playerId: 0, type: 'TheOne', position: [100, 300] });
 	for (var i = 1; i < clients.length; ++i) {
-		clients[i].send({ playerId: i, type: 'TestEnemy', position: [500, 200 + (i - 1) * 200] });
+		clients[i].send({ playerId: i, type: 'TestEnemy', position: [650, 300] });
 	}
 	for (var i = 0; i < clients.length; ++i) {
 		clients[i].playerId = i;
