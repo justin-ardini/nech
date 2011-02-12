@@ -18,6 +18,16 @@ function Entity(position, radius) {
 	this.netId = null;
 }
 
+// hook that's called when the entity object, representing this entity, has come from the server
+// this is for reading custom properties back from onToServer()
+Entity.prototype.onFromServer = function(entity) {
+};
+
+// hook that's called when the entity object, representing this entity, is about to be sent to the server
+// this is for writing custom properties for onFromServer()
+Entity.prototype.onToServer = function(entity) {
+};
+
 Entity.prototype.tick = function(seconds, game) {
 	this.position = this.position.add(this.velocity.mul(seconds));
 };

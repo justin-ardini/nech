@@ -75,7 +75,7 @@ Game.prototype.getMessageForServer = function() {
 				break;
 			}
 		}
-		entities.push({
+		var e = {
 			playerId: this.playerId,
 			netId: entity.netId,
 			type: type,
@@ -83,7 +83,9 @@ Game.prototype.getMessageForServer = function() {
 			velocity: { x: entity.velocity.x, y: entity.velocity.y },
 			angle: entity.angle,
 			health: entity.health
-		});
+		};
+		entity.onToServer(e);
+		entities.push(e);
 	}
 	return { playerId: this.playerId, entities: entities };
 };
@@ -103,17 +105,18 @@ Game.prototype.setRemotesFromMessage = function(message) {
 	// update all existing entities
 	for (var id in oldMap) {
 		if (id in newMap) {
-			var oldEntity = oldMap[id];
-			var newEntity = newMap[id];
-			if (oldEntity.playerId != this.playerId) {
-				oldEntity.position.x = newEntity.position.x;
-				oldEntity.position.y = newEntity.position.y;
-				oldEntity.velocity.x = newEntity.velocity.x;
-				oldEntity.velocity.y = newEntity.velocity.y;
-				oldEntity.angle = newEntity.angle;
+			var entity = oldMap[id];
+			var e = newMap[id];
+			if (entity.playerId != this.playerId) {
+				entity.position.x = e.position.x;
+				entity.position.y = e.position.y;
+				entity.velocity.x = e.velocity.x;
+				entity.velocity.y = e.velocity.y;
+				entity.angle = e.angle;
 			}
-			oldEntity.health = newEntity.health;
-			oldEntity.seenFromServer = true;
+			entity.health = e.health;
+			entity.seenFromServer = true;
+			entity.onFromServer(e);
 		}
 	}
 
@@ -141,6 +144,7 @@ Game.prototype.setRemotesFromMessage = function(message) {
 			entity.angle = e.angle;
 			entity.health = e.health;
 			entity.seenFromServer = true;
+			entity.onFromServer(e);
 			this.entities.push(entity);
 		}
 	}
