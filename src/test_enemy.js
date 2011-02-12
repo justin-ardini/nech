@@ -1,17 +1,17 @@
 __extends__(TestEnemy, Entity);
 
 function TestEnemy(position) {
-	Entity.prototype.constructor.call(this, position, 90, 2);
-	this.charge = 0;
-}
+	Entity.prototype.constructor.call(this, position, 90);
+	this.health = this.maxHealth = 1000;
+};
 
 TestEnemy.prototype.getPrimaryFireBehavior = function() {
 	var this_ = this;
 	return new RepeatedFireBehavior(1.0, function() {
 		var toAdd = [];
-		for (var i = 0; i < 20; ++i) {
-			// -2/3 MATH.PI <= angle <= 2/3 MATH.PI
-			var angle = -0.6666 * Math.PI + (i / 20) * (Math.PI * 1.3333);
+		for (var i = 0; i < 16; ++i) {
+			// 1/3 MATH.PI <= angle <= 5/3 MATH.PI
+			var angle = .3333333 * Math.PI + (i / 20) * (Math.PI * 1.3333);
 			toAdd.push(new Laser(this_.position, angle));
 		}
 		return toAdd;
@@ -20,8 +20,8 @@ TestEnemy.prototype.getPrimaryFireBehavior = function() {
 
 TestEnemy.prototype.getSecondaryFireBehavior = function() {
 	var this_ = this;
-	return new ChargeFireBehavior(5.0, function() {
-		return new Missile(this_.position, 0);
+	return new ChargeFireBehavior(4.0, function() {
+		return new BigLaser(this_.position);
 	});
 };
 

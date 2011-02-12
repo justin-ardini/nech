@@ -2,28 +2,31 @@ __extends__(ChargeFireBehavior, FireBehavior);
 
 function ChargeFireBehavior(chargeTime, createEntityFunction) {
 	FireBehavior.prototype.constructor.call(this);
-	this.maxChargeTime = chargeTime;
-	this.chargeTime = chargeTime;
+	this.maxChargeTime = this.chargeTime = chargeTime;
+	this.charging = false;
 	this.createEntity = createEntityFunction;
 };
 
-RepeatedFireBehavior.prototype.tick = function(game) {
-	/* if (this.chargeTime > 0) {
-		this.repeatTime -= seconds;
+ChargeFireBehavior.prototype.tick = function(seconds, game) {
+	if (this.charging) {
+		this.chargeTime += seconds;
+	} else {
+		this.chargeTime = 0;
 	}
-	if (this.charge < TEST_ENEMY_MAX_CHARGE) {
-		++this.charge;
+	if (this.chargeTime >= this.maxChargeTime) {
+		game.addEntity(this.createEntity());
+		this.chargeTime = 0;
 	}
-	if (this.charge >= TEST_ENEMY_MAX_CHARGE) {
-		// TODO: Do super poweful move!
-		this.charge = -1;
-	} */
 };
 
-RepeatedFireBehavior.prototype.keydown = function(game) {
+ChargeFireBehavior.prototype.keydown = function(game) {
+	this.charging = true;
 	var toAdd = this.createEntity();
 	for (var i = 0; i < toAdd.length; ++i) {
 		game.addEntity(toAdd[i]);
 	}
 };
 
+ChargeFireBehavior.prototype.keyup = function(game) {
+	this.charging = false;
+};

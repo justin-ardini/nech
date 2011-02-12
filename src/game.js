@@ -12,7 +12,8 @@ var classMap = {
 	'Laser': Laser,
 	'TheOne': TheOne,
 	'Missile': Missile,
-	'TestEnemy': TestEnemy
+	'TestEnemy': TestEnemy,
+	'BigLaser': BigLaser
 };
 
 function Game(playerId, type, pos) {
@@ -41,7 +42,8 @@ Game.prototype.tick = function(seconds) {
 	for (var i = 0; i < this.locals.length; i++) {
 		var local = this.locals[i];
 		local.tick(seconds);
-		if (local.position.x + local.radius < 0 || local.position.x - local.radius > GAME_WIDTH ||
+		if ((local.maxHealth > 0 && local.health <= 0) ||
+			local.position.x + local.radius < 0 || local.position.x - local.radius > GAME_WIDTH ||
 			local.position.y + local.radius < 0 || local.position.y - local.radius > GAME_HEIGHT) {
 			// remove local from locals while simultaneously making sure we don't skip the next local
 			this.locals.splice(i--, 1);
@@ -77,10 +79,11 @@ Game.prototype.getMessageForServer = function() {
 			type: type,
 			position: { x: local.position.x, y: local.position.y },
 			velocity: { x: local.velocity.x, y: local.velocity.y },
-			angle: local.angle
+			angle: local.angle,
+			health: local.health
 		});
 	}
-	return { entities: entities };
+	return { playerId: this.playerId, entities: entities };
 };
 
 Game.prototype.setRemotesFromMessage = function(message) {
@@ -105,6 +108,7 @@ Game.prototype.setRemotesFromMessage = function(message) {
 			oldRemote.velocity.x = newRemote.velocity.x;
 			oldRemote.velocity.y = newRemote.velocity.y;
 			oldRemote.angle = newRemote.angle;
+			oldRemote.health = newRemote.health;
 		}
 	}
 
@@ -123,14 +127,25 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		if (!(id in oldMap)) {
 			var r = newMap[id];
 
-			// don't add our own objects to remotes (they are already in locals)
-			if (r.playerId == this.playerId) continue;
+			// dont't add our own objects to remotes (they are already in locals)
+			if (r.playerId == this.playerId) {
+				// but update their health
+				for (var i = 0; i < this.locals.length; i++) {
+					var local = this.locals[i];
+					if (id == local.playerId + ':' + local.netId) {
+						local.health = r.health;
+						break;
+					}
+				}
+				continue;
+			}
 
 			var remote = new classMap[r.type](new Vector(r.position.x, r.position.y));
 			remote.playerId = r.playerId;
 			remote.netId = r.netId;
 			remote.velocity = new Vector(r.velocity.x, r.velocity.y);
 			remote.angle = r.angle;
+			remote.health = r.health;
 			this.remotes.push(remote);
 		}
 	}

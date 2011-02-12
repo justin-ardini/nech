@@ -1,16 +1,18 @@
 __extends__(Laser, Entity);
 
-function Laser(position, velocity) {
-	Entity.prototype.constructor.call(this, position, 5, 0);
-	this.position = position;
-	this.velocity = velocity || new Vector(0, 0); // default velocity of 0 for remote entities
+function Laser(position, angle) {
+	Entity.prototype.constructor.call(this, position, 5);
+	this.angle = angle || 0; // default angle of 0
 }
 
-Laser.prototype.draw = function(c) {
-	var x = this.position.x;
-	var y = this.position.y;
+Laser.prototype.tick = function(seconds) {
+	this.velocity = Vector.fromAngle(this.angle).mul(350);
+	Entity.prototype.tick.call(this, seconds);
+};
+
+Laser.prototype.drawImpl = function(c) {
 	c.beginPath();
-	c.lineTo(x - 5, y);
-	c.lineTo(x + 5, y);
+	c.lineTo(-5, 0);
+	c.lineTo(5, 0);
 	c.stroke();
 };

@@ -2,12 +2,11 @@ __extends__(RepeatedFireBehavior, FireBehavior);
 
 function RepeatedFireBehavior(repeatTime, createEntityFunction) {
 	FireBehavior.prototype.constructor.call(this);
-	this.maxRepeatTime = repeatTime;
-	this.repeatTime = repeatTime;
+	this.maxRepeatTime = this.repeatTime = repeatTime;
 	this.createEntity = createEntityFunction;
 };
 
-RepeatedFireBehavior.prototype.tick = function(game) {
+RepeatedFireBehavior.prototype.tick = function(seconds, game) {
 	if (this.repeatTime > 0) {
 		this.repeatTime -= seconds;
 	}
@@ -21,4 +20,7 @@ RepeatedFireBehavior.prototype.keydown = function(game) {
 		}
 		this.repeatTime = this.maxRepeatTime;
 	}
+};
+
+RepeatedFireBehavior.prototype.keyup = function(game) {
 };

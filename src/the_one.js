@@ -1,10 +1,9 @@
 __extends__(TheOne, Entity);
 
 function TheOne(position) {
-	Entity.prototype.constructor.call(this, position, 15, 1);
-	this.primaryShotDelay = 0;
-	this.secondaryShotDelay = 0;
-}
+	Entity.prototype.constructor.call(this, position, 15);
+	this.health = this.maxHealth = 100;
+};
 
 TheOne.prototype.getPrimaryFireBehavior = function() {
 	var this_ = this;
@@ -16,7 +15,7 @@ TheOne.prototype.getPrimaryFireBehavior = function() {
 TheOne.prototype.getSecondaryFireBehavior = function() {
 	var this_ = this;
 	return new RepeatedFireBehavior(1.0, function() {
-		return [new SuperLaser(this_.position)];
+		return [new Missile(this_.position, 0)];
 	});
 };
 
