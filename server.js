@@ -23,14 +23,7 @@ var httpServer = http.createServer(function (request, response) {
 		...
 	});
 	*/
-}
-
-// If page isn't found
-send404 = function(res){
-  res.writeHead(404);
-  res.write('404');
-  res.end();
-};
+});
 
 
 httpServer.listen(PORT);
