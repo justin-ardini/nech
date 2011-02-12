@@ -32,7 +32,6 @@ Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 
 	// update locals
-	this.controller.tick(seconds);
 	for (var i = 0; i < this.locals.length; i++) {
 		var local = this.locals[i];
 		local.tick(seconds);
@@ -42,6 +41,7 @@ Game.prototype.tick = function(seconds) {
 			this.locals.splice(i--, 1);
 		}
 	}
+	this.controller.tick(seconds);
 
 	// update remotes (these changes are just for smoothing over network lag,
 	// the changes are discarded when new information comes from the server)
