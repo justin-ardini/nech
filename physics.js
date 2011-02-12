@@ -14,7 +14,7 @@ var collisionMap = {
 	Spinner: { type: 'circle', radius: 3 },
 	BigLaser: { type: 'line', thickness: 15 }
 };
-var damageMap = {
+var maxHealth = {
 	TheOne: 50,
 	TestEnemy: 500
 };
@@ -60,7 +60,7 @@ function doDamage(entities) {
 			var player = players[playerId];
 			if (damage.playerId != player.playerId && damageCollidesWithPlayer(damage, player)) {
 				player.serverDamage += damageMap[damage.type];
-				var health = player.maxHealth - player.clientDamage - player.serverDamage;
+				var health = maxHealth[player.type] - player.clientDamage - player.serverDamage;
 				if (health <= 0) idsToRemove[playerId] = true;
 				idsToRemove[damageId] = true;
 			}
