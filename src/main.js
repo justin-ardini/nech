@@ -1,6 +1,6 @@
 (function() {
 	var c;
-	var game;
+	var game = null;
 	var lastTime;
 	var fps = 0;
 
@@ -27,7 +27,6 @@
 		c = document.getElementById('canvas').getContext('2d');
 		c.canvas.width = 800;
 		c.canvas.height = 600;
-		game = NULL; 
 		lastTime = new Date();
 		tick();
 		setInterval(tick, 1000 / 60);
@@ -35,15 +34,15 @@
 		socket.connect(); // Player joins a lobby
 
 		socket.on('message', function(obj) {
-			if (game === NULL) {
-
+			if (game === null) {
+				obj = 
 			} else {
 				game.receiveObject(obj);
 			}
 		});
 
 		socket.on('disconnect', function(obj) {
-			if (game !== NULL) {
+			if (game !== null) {
 				game.pause();
 			}
 		});
