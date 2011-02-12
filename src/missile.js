@@ -3,7 +3,7 @@ __extends__(Missile, Entity);
 function Missile(position, acceleration) {
 	Entity.prototype.constructor.call(this, position, 5, 0);
 
-	this.acceleration = acceleration;
+	this.acceleration = acceleration || new Vector(0, 0); // default acceleration of 0 for remote entities
 	if (this.acceleration.x < 0) this.angle = Math.PI;
 
 	var this_ = this;
