@@ -5,7 +5,7 @@ function TestEnemy(position) {
 	this.charge = 0;
 }
 
-TheOne.prototype.getPrimaryFireBehavior = function() {
+TestEnemy.prototype.getPrimaryFireBehavior = function() {
 	var this_ = this;
 	return new RepeatedFireBehavior(1.0, function() {
 		var toAdd = [];
@@ -18,7 +18,7 @@ TheOne.prototype.getPrimaryFireBehavior = function() {
 	});
 };
 
-TheOne.prototype.getSecondaryFireBehavior = function() {
+TestEnemy.prototype.getSecondaryFireBehavior = function() {
 	var this_ = this;
 	return new ChargeFireBehavior(5.0, function() {
 		return new Missile(this_.position, 0);

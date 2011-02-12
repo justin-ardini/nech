@@ -8,7 +8,7 @@ function ChargeFireBehavior(chargeTime, createEntityFunction) {
 };
 
 RepeatedFireBehavior.prototype.tick = function(game) {
-	if (this.chargeTime > 0) {
+	/* if (this.chargeTime > 0) {
 		this.repeatTime -= seconds;
 	}
 	if (this.charge < TEST_ENEMY_MAX_CHARGE) {
@@ -16,9 +16,8 @@ RepeatedFireBehavior.prototype.tick = function(game) {
 	}
 	if (this.charge >= TEST_ENEMY_MAX_CHARGE) {
 		// TODO: Do super poweful move!
-		game.addEntity(new Missile(this.position, new Vector(600, 0)));
 		this.charge = -1;
-	}
+	} */
 };
 
 RepeatedFireBehavior.prototype.keydown = function(game) {
