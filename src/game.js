@@ -10,7 +10,8 @@ var GAME_HEIGHT = 600;
 
 var classMap = { 
 	'TheOne': TheOne,
-	'Missile': Missile
+	'Missile': Missile,
+	'TestEnemy': TestEnemy
 };
 
 function Game(id, type, pos) {

@@ -33,17 +33,14 @@ console.log('> Server is listening on http://localhost:' + PORT);
 // All the socket.io
 var socket = io.listen(httpServer);
 var clients = [];
+var NUM_CLIENTS = 2;
 // mapping of clients to entities held by that client
 
 // Start a new game, giving the player role to the first one who joined
+// Assumes NUM_CLIENTS clients
 startGame = function() {
-	// TODO: Assign different roles when they exist
-	for (var i = 0; i < clients.length; ++i) {
-		clients[i].playerId = i;
-		clients[i].entities = {};
-		clients[i].send({ playerId: i, type: 'TheOne', position: [100 * i, 100 * i] });
-	}
-	setInterval(pushUpdates, 1000 / 500);
+	clients[0].send({ playerId: 0, type: 'TheOne', position: [100, 100] });
+	clients[1].send({ playerId: 1, type: 'TestEnemy', position: [500, 200] });
 }
 
 // Push updates to all clients
@@ -62,8 +59,7 @@ pushUpdates = function() {
 
 socket.on('connection', function(client) {
 	clients.push(client);
-	// TODO: Up this number / figure way of starting the game
-	if (clients.length === 1) {
+	if (clients.length === NUM_CLIENTS) {
 		startGame(this);
 	}
 
