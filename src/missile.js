@@ -11,7 +11,7 @@ function Missile(position, angle) {
 	});
 }
 
-Missile.prototype.tick = function(seconds) {
+Missile.prototype.tick = function(seconds, game) {
 	this.velocity = this.velocity.add(Vector.fromAngle(this.angle).mul(200 * seconds));
 	this.emitter.tick(seconds);
 
@@ -28,7 +28,7 @@ Missile.prototype.drawImpl = function(c) {
 	c.fill();
 };
 
-Missile.prototype.die = function(game) {
+Missile.prototype.onDie = function(game) {
 	for (var i = 0; i < 40; i++) {
 		var angle = Math.PI * 2 * Math.random();
 		var vel = Vector.fromAngle(angle).mul(200 * Math.random());

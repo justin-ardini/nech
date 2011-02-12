@@ -18,12 +18,12 @@ function Entity(position, radius) {
 	this.netId = null;
 }
 
-Entity.prototype.tick = function(seconds) {
+Entity.prototype.tick = function(seconds, game) {
 	this.position = this.position.add(this.velocity.mul(seconds));
 };
 
 // called when an entity is removed from the entitiy list, override this in a subclass to customize
-Entity.prototype.die = function(game) {
+Entity.prototype.onDie = function(game) {
 };
 
 Entity.prototype.draw = function(c) {

@@ -6,8 +6,11 @@ function BigLaser(position) {
 	this.timeLeft = BIG_LASER_LIFE_SPAN;
 }
 
-BigLaser.prototype.tick = function(seconds) {
+BigLaser.prototype.tick = function(seconds, game) {
 	this.timeLeft -= seconds;
+	if (this.timeLeft <= 0) {
+		game.removeEntity(this);
+	}
 	Entity.prototype.tick.call(this, seconds);
 }
 

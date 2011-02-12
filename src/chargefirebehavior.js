@@ -24,6 +24,5 @@ ChargeFireBehavior.prototype.keydown = function(game) {
 };
 
 ChargeFireBehavior.prototype.keyup = function(game) {
-	console.log('no longer charging');
 	this.charging = false;
 };

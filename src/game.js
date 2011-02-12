@@ -37,7 +37,7 @@ Game.prototype.addEntity = function(entity) {
 Game.prototype.removeEntity = function(entity) {
 	for (var i = 0; i < this.entities.length; ++i) {
 		if (entity == this.entities[i]) {
-			this.entities[i].splice(i, 1);
+			this.entities.splice(i, 1);
 		}
 	}
 };
@@ -49,7 +49,7 @@ Game.prototype.tick = function(seconds) {
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.entities.length; i++) {
 		var entity = this.entities[i];
-		entity.tick(seconds);
+		entity.tick(seconds, this);
 		
 		// keep players within bounds
 		if (entity.maxHealth > 0) {
@@ -123,7 +123,7 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		var id = entity.playerId + ':' + entity.netId;
 		if (!(id in newMap) && entity.seenFromServer) {
 			// let the entity know it's dead (for particles)
-			entity.die(this);
+			entity.onDie(this);
 
 			// remove entity from entities while simultaneously making sure we don't skip the next entity
 			this.entities.splice(i--, 1);
