@@ -9,7 +9,6 @@ function BigLaser(position) {
 
 BigLaser.prototype.tick = function(seconds, game) {
 	this.timeLeft -= seconds;
-	console.log(this.timeLeft);
 	if (this.timeLeft <= 0) {
 		game.removeEntity(this);
 	}
