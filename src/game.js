@@ -1,21 +1,15 @@
 function Game() {
-	this.angle = 0;
+	this.entity = new TestEnemy();
 }
 
 Game.prototype.tick = function(seconds) {
-	this.angle += seconds;
+	this.entity.centerX = 100;
+	this.entity.centerY = 100;
+	this.entity.angle += seconds;
 };
 
 Game.prototype.draw = function(c) {
-	c.clearRect(0, 0, c.canvas.width, c.canvas.height);
-	c.strokeStyle = 'black';
-	c.lineWidth = 10;
-	c.save();
-	c.translate(100, 100);
-	c.rotate(this.angle);
-	c.beginPath();
-	c.lineTo(-100, 0);
-	c.lineTo(100, 0);
-	c.stroke();
-	c.restore();
+	c.fillStyle = '#DFDFDF';
+	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
+	this.entity.draw(c);
 };
