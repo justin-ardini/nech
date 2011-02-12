@@ -59,6 +59,9 @@ pushUpdates = function() {
 }
 
 socket.on('connection', function(client) {
+	if (clients.length >== NUM_CLIENTS) {
+		return;
+	}
 	clients.push(client);
 	if (clients.length === NUM_CLIENTS) {
 		startGame(this);
