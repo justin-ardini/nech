@@ -49,6 +49,8 @@ Game.prototype.removeEntity = function(entity) {
 Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 
+	this.playerAlive = false;
+	this.enemyAlive = false;
 	// update entities
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.entities.length; i++) {
@@ -194,13 +196,13 @@ Game.prototype.draw = function(c) {
 
 	if (!this.playerAlive && !this.enemyAlive) {
 		c.textAlign = 'center';
-		c.fillText("No on wins!", c.canvas.width / 2, c.canvas.height / 2);
+		c.fillText("No one wins!", c.canvas.width / 2, c.canvas.height / 2);
 	} else if (!this.playerAlive) {
 		c.textAlign = 'center';
-		c.fillText("The hero won!", c.canvas.width / 2, c.canvas.height / 2);
+		c.fillText("Oh no, the bad guy won!", c.canvas.width / 2, c.canvas.height / 2);
 	} else if (!this.enemyAlive) {
 		c.textAlign = 'center';
-		c.fillText("The bad guy won!", c.canvas.width / 2, c.canvas.height / 2);
+		c.fillText("The good guy won!", c.canvas.width / 2, c.canvas.height / 2);
 	}
 
 	c.fillStyle = 'black';
