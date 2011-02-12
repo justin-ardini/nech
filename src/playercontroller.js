@@ -1,7 +1,4 @@
 // Shot type enum
-var SHOT_REPEATED1 = 0;
-var SHOT_REPEATED2 = 1;
-var SHOT_CHARGE = 2;
 
 function PlayerController(game, entity) {
 	this.game = game;
@@ -52,6 +49,7 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.shootAltKey) {
 		this.secondaryFireBehavior.keydown(this.game);
 	}
+	console.log(this.shootAlt2Key);
 	if (this.shootAlt2Key && this.tertiaryFireBehavior !== null) {
 		this.tertiaryFireBehavior.keydown(this.game);
 	}
