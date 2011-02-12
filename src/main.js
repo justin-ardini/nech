@@ -2,6 +2,7 @@
 	var c;
 	var game = null;
 	var lastTime;
+	var socket;
 	var fps = 0;
 
 	function tick() {
@@ -17,11 +18,14 @@
 
 		game.draw(c);
 
+		// show fps
 		var text = fps.toFixed() + ' FPS';
 		c.fillStyle = 'black';
-		c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 10);
-	}
+		c.fillText(text, c.canvas.width - c.measureText(text).width - 10, 20);
 
+		// propagate our changes to other clients
+		socket.send(game.getMessageForServer());
+	}
 
 	$(document).ready(function() {
 		c = document.getElementById('canvas').getContext('2d');
@@ -31,8 +35,7 @@
 		c.textAlign = 'center';
 		c.fillText('Waiting for more clients...', GAME_WIDTH / 2, GAME_HEIGHT / 2);
 		lastTime = new Date();
-		game = null;
-		var socket = new io.Socket(null, { port: 8080 }); // IMPORTANT. HAVE THE PORT CORRECT.
+		socket = new io.Socket(null, { port: 8080 }); // IMPORTANT. HAVE THE PORT CORRECT.
 		socket.connect(); // Player joins a lobby
 
 		socket.on('message', function(obj) {
@@ -45,7 +48,7 @@
 				tick();
 				setInterval(tick, 1000 / 60);
 			} else {
-				game.receiveObject(obj);
+				game.setRemotesFromMessage(obj);
 			}
 		});
 

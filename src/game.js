@@ -14,10 +14,13 @@ var classMap = {
 	'TestEnemy': TestEnemy
 };
 
-function Game(id, type, pos) {
+function Game(playerId, type, pos) {
+	this.nextNetId = 0;
 	player = new classMap[type](pos);
+	player.playerId = playerId;
+	player.netId = this.nextNetId++;
 
-	this.id = id;
+	this.playerId = playerId;
 	this.highlightAngle = 0;
 	this.locals = [player];
 	this.remotes = [];
@@ -26,9 +29,9 @@ function Game(id, type, pos) {
 }
 
 Game.prototype.tick = function(seconds) {
-	if (this.paused) {
-		return;
-	}
+	if (this.paused) return;
+
+	// update locals
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.locals.length; i++) {
 		var local = this.locals[i];
@@ -39,21 +42,92 @@ Game.prototype.tick = function(seconds) {
 			this.locals.splice(i--, 1);
 		}
 	}
+
+	// update remotes (these changes are just for smoothing over network lag,
+	// the changes are discarded when new information comes from the server)
 	for (var i = 0; i < this.remotes.length; i++) {
 		this.remotes[i].tick(seconds);
 	}
+
+	// update the visuals
 	this.highlightAngle += seconds * 0.1;
 	Particle.tick(seconds);
-
-	// TODO: broadcast state of this.locals (but not this.remotes, which will instead be broadcast to us)
 };
 
-Game.prototype.receiveObject = function(obj) {
-	// netid, type, position, velocity
-	//obj['netId'] = 
-	//obj['type']
-	//obj['position']
-	//obj['velocity']
+Game.prototype.getMessageForServer = function() {
+	var entities = [];
+	for (var i = 0; i < this.locals.length; i++) {
+		var local = this.locals[i];
+		var type = '<not in classMap>';
+		for (var className in classMap) {
+			if (local instanceof classMap[className]) {
+				type = className;
+				break;
+			}
+		}
+		entities.push({
+			playerId: this.playerId,
+			netId: local.netId,
+			type: type,
+			position: { x: local.position.x, y: local.position.y },
+			velocity: { x: local.velocity.x, y: local.velocity.y },
+			angle: local.angle
+		});
+	}
+	return { entities: entities };
+};
+
+Game.prototype.setRemotesFromMessage = function(message) {
+	// create maps of playerId:netId to the respective objects
+	var oldMap = {}, newMap = {};
+	for (var i = 0; i < this.remotes.length; i++) {
+		var remote = this.remotes[i];
+		oldMap[remote.playerId + ':' + remote.netId] = remote;
+	}
+	for (var i = 0; i < message.entities.length; i++) {
+		var remote = message.entities[i];
+		newMap[remote.playerId + ':' + remote.netId] = remote;
+	}
+
+	// update all existing entities
+	for (var id in oldMap) {
+		if (id in newMap) {
+			var oldRemote = oldMap[id];
+			var newRemote = newMap[id];
+			oldRemote.position.x = newRemote.position.x;
+			oldRemote.position.y = newRemote.position.y;
+			oldRemote.velocity.x = newRemote.velocity.x;
+			oldRemote.velocity.y = newRemote.velocity.y;
+			oldRemote.angle = newRemote.angle;
+		}
+	}
+
+	// remove entities that were removed
+	for (var i = 0; i < this.remotes.length; i++) {
+		var remote = this.remotes[i];
+		var id = remote.playerId + ':' + remote.netId;
+		if (!(id in newMap)) {
+			// remove remote from remotes while simultaneously making sure we don't skip the next remote
+			this.remotes.splice(i--, 1);
+		}
+	}
+
+	// add new entities
+	for (var id in newMap) {
+		if (!(id in oldMap)) {
+			var r = newMap[id];
+
+			// don't add our own objects to remotes (they are already in locals)
+			if (r.playerId == this.playerId) continue;
+
+			var remote = classMap[r.type](new Vector(r.position.x, r.position.y));
+			remote.playerId = r.playerId;
+			remote.netId = r.netId;
+			remote.velocity = new Vector(r.velocity.x, r.velocity.y);
+			remote.angle = r.angle;
+			this.remotes.push(remote);
+		}
+	}
 };
 
 // Pause the game when a disconnect occurs
@@ -68,7 +142,7 @@ Game.prototype.draw = function(c) {
 
 	var text = this.locals.length + ' locals, ' + this.remotes.length + ' remotes';
 	c.fillStyle = 'black';
-	c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 20);
+	c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 10);
 
 	c.fillStyle = 'black';
 	c.strokeStyle = 'black';
