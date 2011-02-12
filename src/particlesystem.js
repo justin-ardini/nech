@@ -4,10 +4,6 @@
 // in that array with all values reset to defaults.  To change a property
 // use the function with the name of that property.  Some property functions
 // can take two values, which will pick a random number between those numbers.
-// Example:
-//
-// Particle().position(center).color(0.9, 0, 0, 0.5).mixColor(1, 0, 0, 1).gravity(1).triangle()
-// Particle().position(center).velocity(velocity).color(0, 0, 0, 1).gravity(0.4, 0.6).circle()
 
 // enum ParticleType
 var PARTICLE_CIRCLE = 0;
@@ -23,22 +19,13 @@ function cssRGBA(r, g, b, a) {
 	return 'rgba(' + Math.round(r * 255) + ', ' + Math.round(g * 255) + ', ' + Math.round(b * 255) + ', ' + a + ')';
 }
 
-// class Particle
 function ParticleInstance() {
 }
 
 ParticleInstance.prototype.init = function() {
 	// must use 'm_' here because many setting functions have the same name as their property
-	this.m_bounces = 0;
 	this.m_type = 0;
-	this.m_red = 0;
-	this.m_green = 0;
-	this.m_blue = 0;
-	this.m_alpha = 0;
 	this.m_radius = 0;
-	this.m_gravity = 0;
-	this.m_elasticity = 0;
-	this.m_decay = 1;
 	this.m_expand = 1;
 	this.m_position = new Vector(0, 0);
 	this.m_velocity = new Vector(0, 0);
@@ -48,18 +35,9 @@ ParticleInstance.prototype.init = function() {
 };
 
 ParticleInstance.prototype.tick = function(seconds) {
-	if(this.m_bounces < 0) {
-		return false;
-	}
-	this.m_alpha *= Math.pow(this.m_decay, seconds);
 	this.m_radius *= Math.pow(this.m_expand, seconds);
-	this.m_velocity.y -= this.m_gravity * seconds;
 	this.m_position = this.m_position.add(this.m_velocity.mul(seconds));
-	this.m_angle += this.m_angularVelocity * seconds;
-	if(this.m_alpha < 0.01) {
-		this.m_bounces = -1;
-	}
-	return (this.m_bounces >= 0);
+	return this.m_radius >= 0.5;
 };
 
 ParticleInstance.prototype.draw = function(c) {
@@ -106,30 +84,11 @@ ParticleInstance.prototype.draw = function(c) {
 };
 
 // all of these functions support chaining to fix constructor with 200 arguments
-ParticleInstance.prototype.bounces = function(min, max) { this.m_bounces = Math.round(randOrTakeFirst(min, max)); return this; };
 ParticleInstance.prototype.circle = function() { this.m_type = PARTICLE_CIRCLE; return this; };
 ParticleInstance.prototype.triangle = function() { this.m_type = PARTICLE_TRIANGLE; return this; };
 ParticleInstance.prototype.line = function() { this.m_type = PARTICLE_LINE; return this; };
 ParticleInstance.prototype.custom = function(drawFunc) { this.m_type = PARTICLE_CUSTOM; this.m_drawFunc = drawFunc; return this; };
-ParticleInstance.prototype.color = function(r, g, b, a) {
-	this.m_red = r;
-	this.m_green = g;
-	this.m_blue = b;
-	this.m_alpha = a;
-	return this;
-};
-ParticleInstance.prototype.mixColor = function(r, g, b, a) {
-	var percent = Math.random();
-	this.m_red = lerp(this.m_red, r, percent);
-	this.m_green = lerp(this.m_green, g, percent);
-	this.m_blue = lerp(this.m_blue, b, percent);
-	this.m_alpha = lerp(this.m_alpha, a, percent);
-	return this;
-};
 ParticleInstance.prototype.radius = function(min, max) { this.m_radius = randOrTakeFirst(min, max); return this; };
-ParticleInstance.prototype.gravity = function(min, max) { this.m_gravity = randOrTakeFirst(min, max); return this; };
-ParticleInstance.prototype.elasticity = function(min, max) { this.m_elasticity = randOrTakeFirst(min, max); return this; };
-ParticleInstance.prototype.decay = function(min, max) { this.m_decay = randOrTakeFirst(min, max); return this; };
 ParticleInstance.prototype.expand = function(min, max) { this.m_expand = randOrTakeFirst(min, max); return this; };
 ParticleInstance.prototype.angle = function(min, max) { this.m_angle = randOrTakeFirst(min, max); return this; };
 ParticleInstance.prototype.angularVelocity = function(min, max) { this.m_angularVelocity = randOrTakeFirst(min, max); return this; };
@@ -143,7 +102,7 @@ var Particle = (function() {
 	var maxCount = particles.length;
 	var count = 0;
 
-	for(var i = 0; i < particles.length; i++) {
+	for (var i = 0; i < particles.length; i++) {
 		particles[i] = new ParticleInstance();
 	}
 
@@ -158,7 +117,7 @@ var Particle = (function() {
 	};
 
 	Particle.tick = function(seconds) {
-		for(var i = 0; i < count; i++) {
+		for (var i = 0; i < count; i++) {
 			var isAlive = particles[i].tick(seconds);
 			if (!isAlive) {
 				// swap the current particle with the last active particle (this will swap with itself if this is the last active particle)
@@ -176,7 +135,7 @@ var Particle = (function() {
 	};
 
 	Particle.draw = function(c) {
-		for(var i = 0; i < count; i++) {
+		for (var i = 0; i < count; i++) {
 			var particle = particles[i];
 			var pos = particle.m_position;
 			particle.draw(c);
@@ -185,3 +144,17 @@ var Particle = (function() {
 
 	return Particle;
 })();
+
+function ParticleEmitter(timeBetweenTicks, onEmit) {
+	this.timeBetweenTicks = timeBetweenTicks;
+	this.onEmit = onEmit;
+	this.timer = 0;
+}
+
+ParticleEmitter.prototype.tick = function(seconds) {
+	this.timer += seconds;
+	while (this.timer > 0) {
+		this.timer -= this.timeBetweenTicks;
+		this.onEmit();
+	}
+};

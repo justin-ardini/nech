@@ -2,17 +2,21 @@ __extends__(TestEnemy, Entity);
 
 function TestEnemy() {
 	Entity.prototype.constructor.call(this);
+	this.particleTimer = 0;
 }
 
 TestEnemy.prototype.tick = function(seconds) {
-	this.center.x -= seconds * 10;
+	this.position.x -= seconds * 10;
 
-	var vel = new Vector(200 * Math.random() + 100, 50 * Math.random() - 25);
-	Particle().position(this.center).velocity(vel).circle().radius(5).color(0, 0, 0, 1).decay(0.1);
+	this.particleTimer += seconds;
+	while (this.particleTimer > 0) {
+		this.particleTimer -= 0.025;
+		var vel = new Vector(100 + 50 * Math.random(), 20 * Math.random() - 10);
+		Particle().position(this.position).velocity(vel).circle().radius(5).expand(0.2);
+	}
 };
 
 TestEnemy.prototype.drawImpl = function(c) {
-	c.fillStyle = 'black';
 	c.beginPath();
 	c.lineTo(-20, 0);
 	c.lineTo(-10, 5);

@@ -7,11 +7,12 @@ function Game() {
 	this.highlightAngle = 0;
 
 	this.theOne = new TheOne();
-	this.theOne.center = new Vector(300, 300);
+	this.theOne.position = new Vector(300, 300);
 
 	this.enemies = [];
 	this.enemies.push(new TestEnemy());
-	this.enemies[0].center = new Vector(400, 400);
+	this.enemies.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
+	this.enemies[0].position = new Vector(400, 400);
 
 	this.controller = new PlayerController(this.theOne);
 }
@@ -30,6 +31,8 @@ Game.prototype.draw = function(c) {
 	c.fillStyle = '#FFFF00';
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 	this.drawHighlight(c);
+
+	c.fillStyle = 'black';
 	for (var i = 0; i < this.enemies.length; i++) {
 		this.enemies[i].draw(c);
 	}
@@ -40,8 +43,8 @@ Game.prototype.draw = function(c) {
 Game.prototype.drawHighlight = function(c) {
 	var radius = 1000;
 	var n = 10;
-	var x = 100;
-	var y = 100;
+	var x = c.canvas.width / 2;
+	var y = c.canvas.height / 2;
 
 	c.fillStyle = '#FFBF00';
 	for (var i = 0; i < n; i++) {
