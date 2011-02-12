@@ -1,11 +1,24 @@
 var damageMap = {
-	'Laser': 1,
-	'Missile': 5
+	Laser: 1,
+	Missile: 5
+};
+var collisionMap = {
+	Laser: { type: 'circle', radius: 5 },
+	Missile: { type: 'circle', radius: 3 },
+	TheOne: { type: 'circle', radius: 20 },
+	TestEnemy: { type: 'circle', radius: 90 }
 };
 
+function circleCollidesWithCircle(a, b) {
+	var dx = a.position.x - b.position.x;
+	var dy = a.position.y - b.position.y;
+	var dr = collisionMap[a.type].radius + collisionMap[b.type].radius;
+	return dx * dx + dy * dy < dr * dr;
+}
+
 function damageCollidesWithPlayer(damage, player) {
-	// TODO
-	return true;
+	// TODO: other types of collisions
+	return circleCollidesWithCircle(damage, player);
 }
 
 function doDamage(entities) {
