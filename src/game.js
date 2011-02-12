@@ -108,16 +108,16 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		if (id in newMap) {
 			var entity = oldMap[id];
 			var e = newMap[id];
+			entity.health = e.health;
+			entity.seenFromServer = true;
 			if (entity.playerId != this.playerId) {
 				entity.position.x = e.position.x;
 				entity.position.y = e.position.y;
 				entity.velocity.x = e.velocity.x;
 				entity.velocity.y = e.velocity.y;
 				entity.angle = e.angle;
+				entity.onFromServer(e);
 			}
-			entity.health = e.health;
-			entity.seenFromServer = true;
-			entity.onFromServer(e);
 		}
 	}
 
