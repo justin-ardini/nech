@@ -35,10 +35,10 @@ TestEnemy.prototype.onToServer = function(entity) {
 }
 
 TestEnemy.prototype.drawImpl = function(c) {
-	for (var i = 0; i < 30; i++) {
-		var angle = -Math.PI / 3 + Math.PI * 2/3 * Math.random();
-		var vel = Vector.fromAngle(angle).mul(-200 * Math.random());
-		Particle().position(this.position.sub(1, 0)).velocity(vel).line().radius(10).expand(0.001).angle(angle);
+	for (var i = 0; i < 6; i++) {
+		var angle = -Math.PI / 5 + Math.PI * 2/5 * Math.random();
+		var vel = Vector.fromAngle(angle).mul(5 + 45 * Math.random());
+		Particle().position(this.position.sub(new Vector(30,0).sub(vel.mul(-1.0)))).velocity(vel).line().radius(6).expand(0.0004).angle(angle);
 	}
 	c.beginPath();
 	c.lineTo(-60, 0);
