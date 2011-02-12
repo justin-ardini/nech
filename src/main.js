@@ -29,6 +29,16 @@ $(document).ready(function() {
 	lastTime = new Date();
 	tick();
 	setInterval(tick, 1000 / 60);
+	var socket = new io.Socket(null, { port: 80 }); // IMPORTANT. HAVE THE PORT CORRECT.
+	socket.connect();
+
+	socket.on('message', function(obj) {
+		game.receiveAction(obj);
+	});
+
+	socket.on('disconnect', function(obj) {
+		game.pause();
+	});
 });
 
 var JS_KEY_UP = 38;
