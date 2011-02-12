@@ -23,6 +23,8 @@ function Game(playerId, type, pos) {
 	this.highlightAngle = 0;
 	this.entities = [];
 	this.paused = false;
+	this.playerAlive = true;
+	this.enemyAlive = true;
 
 	var player = new classMap[type](pos);
 	this.controller = new PlayerController(this, player);
@@ -48,17 +50,15 @@ Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 
 	// update entities
-	var playerAlive = false;
-	var enemyAlive = false;
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.entities.length; i++) {
 		var entity = this.entities[i];
 		entity.tick(seconds, this);
 		if (entity instanceof classMap['TheOne']) {
-			playerAlive = true;
+			this.playerAlive = true;
 		}
 		if (entity instanceof classMap['TestEnemy']) {
-			enemyAlive = true;
+			this.enemyAlive = true;
 		}
 		
 		// keep players within bounds
@@ -191,6 +191,17 @@ Game.prototype.draw = function(c) {
 		entity.draw(c);
 	}
 	Particle.draw(c);
+
+	if (!this.playerAlive && !this.enemyAlive) {
+		c.textAlign = 'center';
+		c.fillText("No on wins!", c.canvas.width / 2, c.canvas.height / 2);
+	} else if (!this.playerAlive) {
+		c.textAlign = 'center';
+		c.fillText("The hero won!", c.canvas.width / 2, c.canvas.height / 2);
+	} else if (!this.enemyAlive) {
+		c.textAlign = 'center';
+		c.fillText("The bad guy won!", c.canvas.width / 2, c.canvas.height / 2);
+	}
 
 	c.fillStyle = 'black';
 	c.textAlign = 'right';
