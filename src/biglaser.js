@@ -1,4 +1,4 @@
-var BIG_LASER_LIFE_SPAN = 2;
+var BIG_LASER_LIFE_SPAN = 1;
 
 __extends__(BigLaser, Entity);
 

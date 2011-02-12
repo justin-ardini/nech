@@ -5,6 +5,7 @@ function TestEnemy(position) {
 	this.health = this.maxHealth = 500;
 	var this_ = this;
 	this.behavior = new ChargeFireBehavior(4.0, function() {
+		this_.health -= 50;
 		return new BigLaser(this_.position);
 	}, new ParticleEmitter(.05, function() {
 		for (var i = 0; i < 6; i++) {
