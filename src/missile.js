@@ -1,7 +1,8 @@
 __extends__(Missile, Entity);
 
-function Missile(position) {
+function Missile(position, angle) {
 	Entity.prototype.constructor.call(this, position, 5, 0);
+	this.angle = angle || 0; // default angle of 0
 
 	var this_ = this;
 	this.emitter = new ParticleEmitter(0.05, function() {

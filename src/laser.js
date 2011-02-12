@@ -1,8 +1,8 @@
 __extends__(Laser, Entity);
 
-function Laser(position, velocity) {
+function Laser(position, angle) {
 	Entity.prototype.constructor.call(this, position, 5, 0);
-	this.position = position;
+	this.angle = angle || 0; // default angle of 0
 }
 
 Laser.prototype.tick = function(seconds) {
