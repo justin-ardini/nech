@@ -2,7 +2,8 @@ function Entity(position, radius) {
 	this.position = position;
 	this.velocity = new Vector(0, 0);
 	this.radius = radius;
-	this.health = 0;
+	this.clientDamage = 0;
+	this.serverDamage = 0;
 	this.maxHealth = 0;
 	this.angle = 0;
 	
@@ -50,7 +51,8 @@ Entity.prototype.drawHealthBar = function(c) {
 		var r = this.radius;
 		var height = 10;
 		var padding = 2;
+		var health = Math.max(0, this.maxHealth - this.clientDamage - this.serverDamage);
 		c.strokeRect(-r, -r - height - padding, 2 * r, height);
-		c.fillRect(-r + padding, -r - height, 2 * (r - padding) * this.health / this.maxHealth, height - 2 * padding);
+		c.fillRect(-r + padding, -r - height, 2 * (r - padding) * health / this.maxHealth, height - 2 * padding);
 	}
 };

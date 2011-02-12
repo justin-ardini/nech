@@ -2,7 +2,7 @@ __extends__(TheOne, Entity);
 
 function TheOne(position) {
 	Entity.prototype.constructor.call(this, position, 15);
-	this.health = this.maxHealth = 50;
+	this.maxHealth = 50;
 	this.shield = this.maxShield = 100;
 	this.usingShield = false;
 };

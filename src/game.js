@@ -96,7 +96,8 @@ Game.prototype.getMessageForServer = function() {
 			position: { x: entity.position.x, y: entity.position.y },
 			velocity: { x: entity.velocity.x, y: entity.velocity.y },
 			angle: entity.angle,
-			health: entity.health
+			clientDamage: entity.clientDamage,
+			serverDamage: entity.serverDamage
 		};
 		entity.onToServer(e);
 		entities.push(e);
@@ -121,9 +122,10 @@ Game.prototype.setRemotesFromMessage = function(message) {
 		if (id in newMap) {
 			var entity = oldMap[id];
 			var e = newMap[id];
-			entity.health = e.health;
+			entity.serverDamage = e.serverDamage;
 			entity.seenFromServer = true;
 			if (entity.playerId != this.playerId) {
+				entity.clientDamage = e.clientDamage;
 				entity.position.x = e.position.x;
 				entity.position.y = e.position.y;
 				entity.velocity.x = e.velocity.x;
@@ -165,6 +167,8 @@ Game.prototype.setRemotesFromMessage = function(message) {
 			entity.angle = e.angle;
 			entity.health = e.health;
 			entity.seenFromServer = true;
+			entity.serverDamage = e.serverDamage;
+			entity.clientDamage = e.clientDamage;
 			entity.onFromServer(e);
 			this.entities.push(entity);
 		}

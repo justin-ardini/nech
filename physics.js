@@ -14,6 +14,10 @@ var collisionMap = {
 	Spinner: { type: 'circle', radius: 3 },
 	BigLaser: { type: 'line', thickness: 15 }
 };
+var damageMap = {
+	TheOne: 50,
+	TestEnemy: 500
+};
 
 function circleCollidesWithCircle(a, b) {
 	var dx = a.position.x - b.position.x;
@@ -41,10 +45,10 @@ function doDamage(entities) {
 	for (var i = 0; i < entities.length; i++) {
 		var entity = entities[i];
 		var id = entity.playerId + ':' + entity.netId;
-		if (entity.health) {
-			players[id] = entity;
-		} else if (entity.type in damageMap) {
+		if (entity.type in damageMap) {
 			damages[id] = entity;
+		} else {
+			players[id] = entity;
 		}
 	}
 
@@ -55,8 +59,9 @@ function doDamage(entities) {
 			var damage = damages[damageId];
 			var player = players[playerId];
 			if (damage.playerId != player.playerId && damageCollidesWithPlayer(damage, player)) {
-				player.health -= damageMap[damage.type];
-				if (player.health <= 0) idsToRemove[playerId] = true;
+				player.serverDamage += damageMap[damage.type];
+				var health = player.maxHealth - player.clientDamage - player.serverDamage;
+				if (health <= 0) idsToRemove[playerId] = true;
 				idsToRemove[damageId] = true;
 			}
 		}
