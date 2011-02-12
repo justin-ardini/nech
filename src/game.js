@@ -9,6 +9,7 @@ var GAME_WIDTH = 800;
 var GAME_HEIGHT = 600;
 
 var classMap = { 
+	'Laser': Laser,
 	'TheOne': TheOne,
 	'Missile': Missile,
 	'TestEnemy': TestEnemy
@@ -16,17 +17,22 @@ var classMap = {
 
 function Game(playerId, type, pos) {
 	this.nextNetId = 0;
-	player = new classMap[type](pos);
-	player.playerId = playerId;
-	player.netId = this.nextNetId++;
-
 	this.playerId = playerId;
 	this.highlightAngle = 0;
-	this.locals = [player];
+	this.locals = [];
 	this.remotes = [];
-	this.controller = new PlayerController(this, player);
 	this.paused = false;
+
+	var player = new classMap[type](pos);
+	this.controller = new PlayerController(this, player);
+	this.addEntity(player);
 }
+
+Game.prototype.addEntity = function(entity) {
+	entity.playerId = this.playerId;
+	entity.netId = this.nextNetId++;
+	this.locals.push(entity);
+};
 
 Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
