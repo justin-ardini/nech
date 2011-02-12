@@ -48,10 +48,18 @@ Game.prototype.tick = function(seconds) {
 	if (this.paused) return;
 
 	// update entities
+	var playerAlive = false;
+	var enemyAlive = false;
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.entities.length; i++) {
 		var entity = this.entities[i];
 		entity.tick(seconds, this);
+		if (entity instanceof classMap['TheOne']) {
+			playerAlive = true;
+		}
+		if (entity instanceof classMap['TestEnemy']) {
+			enemyAlive = true;
+		}
 		
 		// keep players within bounds
 		if (entity.maxHealth > 0) {
