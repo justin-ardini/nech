@@ -5,6 +5,7 @@ function Missile(position, acceleration) {
 
 	this.velocity = new Vector(0, 0);
 	this.acceleration = acceleration;
+	if (this.acceleration.x < 0) this.angle = Math.PI;
 
 	var this_ = this;
 	var direction = this.acceleration.unit().mul(50);

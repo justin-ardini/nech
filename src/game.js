@@ -22,10 +22,6 @@ function Game(id, type, pos) {
 	this.locals = [player];
 	this.remotes = [];
 	this.controller = new PlayerController(this, player);
-
-	// TODO: remove this when locals and remotes are implemented
-	this.remotes.push(new TestEnemy(new Vector(400, 400)));
-	this.remotes.push(new TestEnemy(new Vector(600, 200)));
 	this.paused = false;
 }
 

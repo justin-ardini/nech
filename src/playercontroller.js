@@ -3,6 +3,7 @@ function PlayerController(game, entity) {
 	this.entity = entity;
 	this.fireMainDelay = 0;
 	this.fireAltDelay = 0;
+	this.direction = (entity instanceof TheOne) ? 1 : -1;
 
 	// these will automatically be set by Game
 	this.upKey = false;
@@ -25,14 +26,14 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.fireMainDelay > 0) {
 		this.fireMainDelay -= seconds;
 	} else if (this.shootMainKey) {
-		this.game.locals.push(new Laser(this.entity.position, new Vector(350, 0)));
+		this.game.locals.push(new Laser(this.entity.position, new Vector(350 * this.direction, 0)));
 		this.fireMainDelay = 0.1;
 	}
 
 	if (this.fireAltDelay > 0) {
 		this.fireAltDelay -= seconds;
 	} else if (this.shootAltKey) {
-		this.game.locals.push(new Missile(this.entity.position, new Vector(200, 0)));
+		this.game.locals.push(new Missile(this.entity.position, new Vector(200 * this.direction, 0)));
 		this.fireAltDelay = 1;
 	}
 };
