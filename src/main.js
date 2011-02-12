@@ -22,14 +22,31 @@
 		c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 10);
 	}
 
+
 	$(document).ready(function() {
 		c = document.getElementById('canvas').getContext('2d');
 		c.canvas.width = 800;
 		c.canvas.height = 600;
-		game = new Game();
+		game = NULL; 
 		lastTime = new Date();
 		tick();
 		setInterval(tick, 1000 / 60);
+		var socket = new io.Socket(null, { port: 80 }); // IMPORTANT. HAVE THE PORT CORRECT.
+		socket.connect(); // Player joins a lobby
+
+		socket.on('message', function(obj) {
+			if (game === NULL) {
+
+			} else {
+				game.receiveObject(obj);
+			}
+		});
+
+		socket.on('disconnect', function(obj) {
+			if (game !== NULL) {
+				game.pause();
+			}
+		});
 	});
 
 	var JS_KEY_UP = 38;

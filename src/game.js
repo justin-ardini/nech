@@ -17,9 +17,13 @@ function Game(player) {
 	this.theOne.position = new Vector(300, 300);
 	this.remotes.push(new TestEnemy(new Vector(400, 400)));
 	this.remotes.push(new Missile(new Vector(200, 200), new Vector(200, 0)));
+	this.paused = false;
 }
 
 Game.prototype.tick = function(seconds) {
+	if (this.paused) {
+		return;
+	}
 	this.controller.tick(seconds);
 	for (var i = 0; i < this.locals.length; i++) {
 		this.locals[i].tick(seconds);
@@ -33,12 +37,29 @@ Game.prototype.tick = function(seconds) {
 	// TODO: broadcast state of this.locals (but not this.remotes, which will instead be broadcast to us)
 };
 
+Game.prototype.receiveObject = function(obj) {
+    if ('enemies' in obj) {
+    }
+    if ('dropPlayer' in obj) {
+        this.dropPlayer(obj['dropPlayer']);        
+    }
+};
+
+// Pause the game when a disconnect occurs
+Game.prototype.pause = function () {
+	this.paused = true;
+};
+
 Game.prototype.draw = function(c) {
 	c.fillStyle = '#FFFF00';
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 	this.drawHighlight(c);
 
 	c.fillStyle = 'black';
+	if (this.paused) {
+		c.textAlign = 'center';
+		c.fillText("Sorry, you were disconnected.", c.canvas.width / 2, c.canvas.height / 2);
+	}
 	for (var i = 0; i < this.locals.length; i++) {
 		this.locals[i].draw(c);
 	}
