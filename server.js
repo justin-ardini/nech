@@ -59,7 +59,7 @@ pushUpdates = function() {
 }
 
 socket.on('connection', function(client) {
-	if (clients.length >== NUM_CLIENTS) {
+	if (clients.length >= NUM_CLIENTS) {
 		return;
 	}
 	clients.push(client);
