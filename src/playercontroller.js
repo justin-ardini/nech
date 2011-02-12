@@ -23,14 +23,12 @@ PlayerController.prototype.tick = function(seconds) {
 	if (this.fireMainDelay > 0) {
 		this.fireMainDelay -= seconds;
 	} else if (this.shootMainKey) {
-		this.entity.primaryShot(this.game);
-		this.fireMainDelay = 0.1;
+		this.fireMainDelay = this.entity.primaryShot(this.game);
 	}
 
 	if (this.fireAltDelay > 0) {
 		this.fireAltDelay -= seconds;
 	} else if (this.shootAltKey) {
-		this.entity.secondaryShot(this.game);
-		this.fireAltDelay = 1;
+		this.fireAltDelay = this.entity.secondaryShot(this.game);
 	}
 };
