@@ -1,7 +1,7 @@
 __extends__(Laser, Entity);
 
 function Laser(position, velocity) {
-	Entity.prototype.constructor.call(this, position, 5);
+	Entity.prototype.constructor.call(this, position, 5, 0);
 	this.position = position;
 	this.velocity = velocity;
 	this.direction = velocity.unit().mul(5);

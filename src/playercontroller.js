@@ -14,7 +14,7 @@ function PlayerController(game, entity) {
 }
 
 PlayerController.prototype.tick = function(seconds) {
-	var speed = 300;
+	var speed = 200;
 	if (this.upKey) this.entity.position.y -= speed * seconds;
 	if (this.downKey) this.entity.position.y += speed * seconds;
 	if (this.leftKey) this.entity.position.x -= speed * seconds;

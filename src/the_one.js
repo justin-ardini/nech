@@ -1,7 +1,7 @@
 __extends__(TheOne, Entity);
 
 function TheOne(position) {
-	Entity.prototype.constructor.call(this, position, 15);
+	Entity.prototype.constructor.call(this, position, 15, 1);
 }
 
 TheOne.prototype.tick = function(seconds) {
