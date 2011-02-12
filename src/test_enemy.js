@@ -6,7 +6,7 @@ function TestEnemy(position) {
 	var this_ = this;
 	this.behavior = new ChargeFireBehavior(4.0, function() {
 		return new BigLaser(this_.position);
-	}, new ParticleEmitter(.06, function() {
+	}, new ParticleEmitter(.05, function() {
 		for (var i = 0; i < 6; i++) {
 			var angle = -Math.PI / 5 + Math.PI * 2/5 * Math.random();
 			var vel = Vector.fromAngle(angle).mul(5 + 45 * Math.random());

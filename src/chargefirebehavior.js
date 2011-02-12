@@ -12,6 +12,9 @@ ChargeFireBehavior.prototype.tick = function(seconds, game) {
 	if (this.charging) {
 		this.emitter.tick(seconds);
 		this.chargeTime += seconds;
+		if (this.maxChargeTime - this.chargeTime < 0.6) {
+			this.emitter.tick(-seconds);
+		}
 	} else {
 		this.chargeTime = 0;
 	}
