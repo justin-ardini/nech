@@ -22,7 +22,7 @@ watchFiles(parseFolder('.'), restart); // watch all files, restart if problem
 // executes the command given by the second argument
 function run() {
   // run the server
-  child = spawn('/home/justin/local/bin/node', [process.argv[2]]);
+  child = spawn('node', [process.argv[2]]);
 
   // let the child's `puts` escape.
   child.stdout.on('data', function(data) { 
