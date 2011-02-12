@@ -184,6 +184,7 @@ Game.prototype.draw = function(c) {
 	if (this.paused) {
 		c.textAlign = 'center';
 		c.fillText("Sorry, you were disconnected.", c.canvas.width / 2, c.canvas.height / 2);
+		return;
 	}
 	var locals = 0, remotes = 0;
 	for (var i = 0; i < this.entities.length; i++) {
