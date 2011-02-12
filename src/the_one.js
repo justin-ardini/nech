@@ -4,7 +4,8 @@ var THE_ONE_DELAY2 = 1.0;
 __extends__(TheOne, Entity);
 
 function TheOne(position) {
-	Entity.prototype.constructor.call(this, position, 15, 1);
+	Entity.prototype.constructor.call(this, position, 15);
+	this.health = this.maxHealth = 100;
 }
 
 TheOne.prototype.primaryShot = function(game) {

@@ -4,7 +4,8 @@ var TEST_ENEMY_DELAY2 = 5.0;
 __extends__(TestEnemy, Entity);
 
 function TestEnemy(position) {
-	Entity.prototype.constructor.call(this, position, 90, 2);
+	Entity.prototype.constructor.call(this, position, 90);
+	this.health = this.maxHealth = 1000;
 }
 
 TestEnemy.prototype.primaryShot = function(game) {

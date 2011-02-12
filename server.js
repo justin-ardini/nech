@@ -1,3 +1,4 @@
+var physics = require('./physics');
 var sys = require('sys')
 	, url = require('url')
 	, http = require('http')
@@ -44,7 +45,7 @@ startGame = function() {
 	clients[1].send({ playerId: 1, type: 'TestEnemy', position: [500, 200] });
 	for (var i = 0; i < clients.length; ++i) {
 		clients[i].playerId = i;
-		clients[i].entities = {};
+		clients[i].entities = [];
 	}
 	var fps = 10;
 	setInterval(pushUpdates, 1000 / fps);
@@ -55,10 +56,13 @@ pushUpdates = function() {
 	var len = clients.length;
 	var entities = [];
 	for (var i = 0; i < len; ++i) {
-		for (var netId in clients[i].entities) {
-			entities.push(clients[i].entities[netId]);
+		for (var index in clients[i].entities) {
+			entities.push(clients[i].entities[index]);
 		}
 	}
+	
+	physics.doDamage(entities);
+	
 	for (var i = 0; i < len; ++i) {
 		clients[i].send({entities: entities});
 	}
@@ -75,7 +79,7 @@ socket.on('connection', function(client) {
 
 	// Update list of entities for that client
 	client.on('message', function(message) {
-		console.log('Received message from client ' + this.playerId);
+		// console.log('Received message from client ' + this.playerId);
 		if (message.entities.length > 0) {
 			var playerId = message.entities[0].playerId;
 			if (clients[playerId] !== undefined) {

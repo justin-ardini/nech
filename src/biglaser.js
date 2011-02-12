@@ -1,7 +1,7 @@
 __extends__(BigLaser, Entity);
 
 function BigLaser(position) {
-	Entity.prototype.constructor.call(this, position, 15, 1);
+	Entity.prototype.constructor.call(this, position, 15);
 }
 
 BigLaser.prototype.draw = function(c) {

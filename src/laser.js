@@ -1,7 +1,7 @@
 __extends__(Laser, Entity);
 
 function Laser(position, angle) {
-	Entity.prototype.constructor.call(this, position, 5, 0);
+	Entity.prototype.constructor.call(this, position, 5);
 	this.angle = angle || 0; // default angle of 0
 }
 
