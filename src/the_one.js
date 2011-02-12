@@ -21,6 +21,16 @@ TheOne.prototype.getSecondaryFireBehavior = function() {
 	});
 };
 
+TheOne.prototype.onFromServer = function(entity) {
+	this.shield = entity.shield;
+	this.usingShield = entity.usingShield;
+};
+
+TheOne.prototype.onToServer = function(entity) {
+	entity.shield = this.shield;
+	entity.usingShield = this.usingShield;
+};
+
 TheOne.prototype.onDie = function(game) {
 	for (var i = 0; i < 40; i++) {
 		var angle = Math.PI * 2 * Math.random();
