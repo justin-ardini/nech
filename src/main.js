@@ -31,9 +31,12 @@
 		c = document.getElementById('canvas').getContext('2d');
 		c.canvas.width = GAME_WIDTH;
 		c.canvas.height = GAME_HEIGHT;
+		c.font = '15px Arial';
+
 		c.fillStyle = 'white';
 		c.textAlign = 'center';
 		c.fillText('Waiting for more clients...', GAME_WIDTH / 2, GAME_HEIGHT / 2);
+
 		lastTime = new Date();
 		socket = new io.Socket(null, { port: 8080 }); // IMPORTANT. HAVE THE PORT CORRECT.
 		socket.connect(); // Player joins a lobby
