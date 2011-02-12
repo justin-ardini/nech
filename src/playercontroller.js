@@ -11,15 +11,15 @@ function PlayerController(entity) {
 PlayerController.prototype.tick = function(seconds) {
 	var speed = 300;
 	if (this.upKey) {
-		this.entity.center.y -= speed * seconds;
+		this.entity.position.y -= speed * seconds;
 	}
 	if (this.downKey) {
-		this.entity.center.y += speed * seconds;
+		this.entity.position.y += speed * seconds;
 	}
 	if (this.leftKey) {
-		this.entity.center.x -= speed * seconds;
+		this.entity.position.x -= speed * seconds;
 	}
 	if (this.rightKey) {
-		this.entity.center.x += speed * seconds;
+		this.entity.position.x += speed * seconds;
 	}
 };
