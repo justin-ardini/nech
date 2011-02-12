@@ -34,6 +34,7 @@
 		socket.connect(); // Player joins a lobby
 
 		socket.on('message', function(obj) {
+			console.log(obj);
 			if (game === null) {
 				var id = obj['playerId'];
 				var type = obj['type'];
