@@ -140,9 +140,9 @@ Game.prototype.draw = function(c) {
 	c.fillRect(0, 0, c.canvas.width, c.canvas.height);
 	this.drawHighlight(c);
 
-	var text = this.locals.length + ' locals, ' + this.remotes.length + ' remotes';
 	c.fillStyle = 'black';
-	c.fillText(text, c.canvas.width - c.measureText(text).width - 10, c.canvas.height - 10);
+	c.textAlign = 'right';
+	c.fillText(this.locals.length + ' locals, ' + this.remotes.length + ' remotes', c.canvas.width - 10, c.canvas.height - 10);
 
 	c.fillStyle = 'black';
 	c.strokeStyle = 'black';

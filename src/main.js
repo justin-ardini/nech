@@ -19,9 +19,9 @@
 		game.draw(c);
 
 		// show fps
-		var text = fps.toFixed() + ' FPS';
 		c.fillStyle = 'black';
-		c.fillText(text, c.canvas.width - c.measureText(text).width - 10, 20);
+		c.textAlign = 'right';
+		c.fillText(fps.toFixed() + ' FPS', c.canvas.width - 10, 20);
 
 		// propagate our changes to other clients
 		socket.send(game.getMessageForServer());
